@@ -105,6 +105,13 @@ function formatTime(date: Date): string {
   });
 }
 
+function formatDateTime(date: Date): string {
+  // 日付＋時刻（例: 8/11（月）19:04:32）
+  const jst = new Date(date.toLocaleString("en-US", { timeZone: "Asia/Tokyo" }));
+  const week = ["日", "月", "火", "水", "木", "金", "土"][jst.getDay()];
+  return `${jst.getMonth() + 1}/${jst.getDate()}（${week}）${formatTime(date)}`;
+}
+
 // 放送開始時刻（19時ちょうど開始の場合）
 const START_DATE = new Date("2026-08-10T19:00:00+09:00");
 
@@ -176,7 +183,7 @@ export default function TimetablePage() {
           { label: "収録曲数", value: `${data.total_songs}曲` },
           { label: "総再生時間", value: formatTotal(data.total_sec) },
           { label: "開始予定", value: "8/10（月）19:00:00" },
-          { label: "終了予定", value: "8/11（月）19:00:00" },
+          { label: "終了予定", value: formatDateTime(endAt) },
         ].map((s) => (
           <div key={s.label} className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-4 text-center">
             <div className="text-sm font-black text-amber-400">{s.value}</div>

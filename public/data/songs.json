@@ -4299,8 +4299,78 @@
    "duration_sec": 248.0,
    "url": "https://www.youtube.com/watch?v=P31CxorjHjI",
    "source": "リプ"
+  },
+  {
+   "id": 432,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:JPkqjziCGfo",
+   "title": "The Average Man Keeps Walking.",
+   "duration_sec": 365.0,
+   "url": "https://www.youtube.com/watch?v=JPkqjziCGfo",
+   "source": "DM"
+  },
+  {
+   "id": 433,
+   "user": "kaiwww001",
+   "display_name": "いあく",
+   "song_id": "YT:nj2WqZ5tGwE",
+   "title": "ハリボテ裁判 / 初音ミク＆重音テト",
+   "duration_sec": 131.0,
+   "url": "https://www.youtube.com/watch?v=nj2WqZ5tGwE",
+   "source": "リプ"
+  },
+  {
+   "id": 434,
+   "user": "MKjNubdNSJ31969",
+   "display_name": "ヒカマーズ兵隊(旧:KBTIT_MANIA)",
+   "song_id": "NICO:sm37199353",
+   "title": "【合作】Hikakin Mania愛好伝 ～中毒者へ捧げるメドレー",
+   "duration_sec": 678.0,
+   "url": "https://www.nicovideo.jp/watch/sm37199353",
+   "source": "リプ"
+  },
+  {
+   "id": 435,
+   "user": "gationara",
+   "display_name": "ガおマニ（ガチおなら_mania）",
+   "song_id": "YT:AoToyjajWq0",
+   "title": "銀の龍の背に乗って",
+   "duration_sec": 379.0,
+   "url": "https://www.youtube.com/watch?v=AoToyjajWq0",
+   "source": "リプ"
+  },
+  {
+   "id": 436,
+   "user": "3ABOKC_BVM",
+   "display_name": "アンサールБВМ",
+   "song_id": "YT:E8e19xlb7mM",
+   "title": "Cuphead OST - Murine Corps [Music]",
+   "duration_sec": 250.0,
+   "url": "https://www.youtube.com/watch?v=E8e19xlb7mM",
+   "source": "リプ"
+  },
+  {
+   "id": 437,
+   "user": "MKjNubdNSJ31969",
+   "display_name": "ヒカマーズ兵隊(旧:KBTIT_MANIA)",
+   "song_id": "NICO:sm36735375",
+   "title": "土方の拳OP「岡山を取り戻せ!!」",
+   "duration_sec": 133.0,
+   "url": "https://www.nicovideo.jp/watch/sm36735375",
+   "source": "リプ"
+  },
+  {
+   "id": 438,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:XTByXzlVhOo",
+   "title": "Irhabyun anna nasheed",
+   "duration_sec": 326.0,
+   "url": "https://www.youtube.com/watch?v=XTByXzlVhOo",
+   "source": "DM"
   }
  ],
- "total_songs": 429,
- "total_sec": 84409.9
+ "total_songs": 436,
+ "total_sec": 86671.9
 }
