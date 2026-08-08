@@ -633,7 +633,7 @@
   {
    "id": 63,
    "user": "Hiwai_8",
-   "display_name": "卑猥な三日月地帯2nd",
+   "display_name": "卑猥な三日月地帯",
    "song_id": "YT:s4T2CJVwMFE",
    "title": "麻原彰晃マーチ（選挙）",
    "duration_sec": 291.0,
@@ -643,7 +643,7 @@
   {
    "id": 64,
    "user": "Hiwai_8",
-   "display_name": "卑猥な三日月地帯2nd",
+   "display_name": "卑猥な三日月地帯",
    "song_id": "NICO:sm40019160",
    "title": "Saleel al-Sawarim نشيد صليل الصوارم نشيد الأُباة",
    "duration_sec": 188.0,
@@ -4369,8 +4369,68 @@
    "duration_sec": 326.0,
    "url": "https://www.youtube.com/watch?v=XTByXzlVhOo",
    "source": "DM"
+  },
+  {
+   "id": 439,
+   "user": "vap_mani5623",
+   "display_name": "vapor_mania",
+   "song_id": "YT:EuVTt-M3IXo",
+   "title": "FrankJavCee - Ｓｉｍｐｓｏｎｗａｖｅ １９９５ (Original Music Video)",
+   "duration_sec": 142.0,
+   "url": "https://www.youtube.com/watch?v=EuVTt-M3IXo",
+   "source": "リプ"
+  },
+  {
+   "id": 440,
+   "user": "vap_mani5623",
+   "display_name": "vapor_mania",
+   "song_id": "YT:TOOZ5T0TRDI",
+   "title": "missing home",
+   "duration_sec": 125.0,
+   "url": "https://www.youtube.com/watch?v=TOOZ5T0TRDI",
+   "source": "リプ"
+  },
+  {
+   "id": 441,
+   "user": "Kirara_mania",
+   "display_name": "りぺ",
+   "song_id": "YT:w7i-s2L_YKo",
+   "title": "麻原彰晃  真理教、魔を祓う尊師の歌旧バージョン",
+   "duration_sec": 301.0,
+   "url": "https://www.youtube.com/watch?v=w7i-s2L_YKo",
+   "source": "リプ"
+  },
+  {
+   "id": 442,
+   "user": "Kirara_mania",
+   "display_name": "りぺ",
+   "song_id": "NICO:sm37329061",
+   "title": "きらら系アニメの楽曲を継ぎはぎして「やったぜ。」朗読.full",
+   "duration_sec": 333.0,
+   "url": "https://www.nicovideo.jp/watch/sm37329061",
+   "source": "リプ"
+  },
+  {
+   "id": 443,
+   "user": "iliokf",
+   "display_name": "魚介_mania",
+   "song_id": "YT:iE02L-sMnnI",
+   "title": "Do It Right  Jingle Punks (No Copyright Music)",
+   "duration_sec": 224.0,
+   "url": "https://www.youtube.com/watch?v=iE02L-sMnnI",
+   "source": "リプ"
+  },
+  {
+   "id": 444,
+   "user": "inmujunhikamani",
+   "display_name": "さくまに",
+   "song_id": "YT:pQhfAGFb-Gg",
+   "title": "うんこちゃんとアマガエル",
+   "duration_sec": 206.0,
+   "url": "https://www.youtube.com/watch?v=pQhfAGFb-Gg",
+   "source": "リプ"
   }
  ],
- "total_songs": 436,
- "total_sec": 86671.9
+ "total_songs": 442,
+ "total_sec": 88002.9
 }

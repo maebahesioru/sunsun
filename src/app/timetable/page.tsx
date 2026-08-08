@@ -157,7 +157,7 @@ export default function TimetablePage() {
     idx,
     number: idx + 1,
     title: song.title,
-    display_name: song.source === "DM" ? "匿名" : song.display_name || song.user,
+    display_name: song.source === "DM" && song.display_name === "匿名" ? "匿名" : song.display_name || song.user,
     user: song.user,
     source: song.source,
     start_label: `▶ ${formatTime(new Date(schedule[idx].startMs))}`,

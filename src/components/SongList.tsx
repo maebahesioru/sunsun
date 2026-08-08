@@ -79,7 +79,7 @@ export default function SongList({ songs }: { songs: SongListItem[] }) {
                 {song.title}
               </div>
               <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-zinc-400">
-                {song.source === "DM" ? (
+                {song.source === "DM" && song.display_name === "匿名" ? (
                   <span className="font-semibold text-purple-300">匿名</span>
                 ) : (
                   <>
