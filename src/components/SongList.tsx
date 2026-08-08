@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export type SongListItem = {
   idx: number; // 0-based（NowPlayingの強調表示と一致）
@@ -9,18 +9,76 @@ export type SongListItem = {
   display_name: string;
   user: string;
   source: string;
+  duration_sec: number;
   start_label: string;
   duration_label: string;
   url: string;
 };
 
-export default function SongList({ songs }: { songs: SongListItem[] }) {
+function formatTime(date: Date): string {
+  return date.toLocaleTimeString("ja-JP", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: false,
+    timeZone: "Asia/Tokyo",
+  });
+}
+
+export default function SongList({
+  songs,
+  startDateMs,
+}: {
+  songs: SongListItem[];
+  startDateMs: number;
+}) {
   const [query, setQuery] = useState("");
+  const [baseMs, setBaseMs] = useState<number | null>(null);
+
+  // 実際の放送開始時刻を取得して自動追従（放送開始後は番組表の時刻が全部ずれる）
+  useEffect(() => {
+    let cancelled = false;
+    const tick = async () => {
+      try {
+        const res = await fetch("/api/now-playing", { cache: "no-store" });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (!data || typeof data.song_idx !== "number" || !data.started_at) return;
+        // 実際の開始時刻 = 現在曲の開始時刻 - そこまでの累積時間
+        let cum = 0;
+        for (let i = 0; i < data.song_idx && i < songs.length; i++) {
+          cum += songs[i].duration_sec || 0;
+        }
+        const actualStart = new Date(data.started_at).getTime() - cum * 1000;
+        if (!cancelled && !isNaN(actualStart)) setBaseMs(actualStart);
+      } catch {
+        /* 放送前や一時エラーは無視 */
+      }
+    };
+    tick();
+    const timer = setInterval(tick, 3000);
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+    };
+  }, [songs]);
+
+  const base = baseMs ?? startDateMs;
+
+  // 基準時刻から各曲の実際の開始時刻を計算
+  const timed = useMemo(() => {
+    let cum = 0;
+    return songs.map((s) => {
+      const startMs = base + cum * 1000;
+      cum += s.duration_sec || 0;
+      return { ...s, start_label: `▶ ${formatTime(new Date(startMs))}` };
+    });
+  }, [songs, base]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return songs;
-    return songs.filter(
+    if (!q) return timed;
+    return timed.filter(
       (s) =>
         s.title.toLowerCase().includes(q) ||
         s.display_name.toLowerCase().includes(q) ||
@@ -28,7 +86,7 @@ export default function SongList({ songs }: { songs: SongListItem[] }) {
         s.number.toString().includes(q) ||
         s.number.toString().padStart(3, "0").includes(q)
     );
-  }, [query, songs]);
+  }, [query, timed]);
 
   return (
     <div className="mt-6 space-y-2">

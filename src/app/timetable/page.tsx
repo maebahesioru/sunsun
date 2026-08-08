@@ -2,6 +2,7 @@ import { existsSync, readFileSync, statSync } from "fs";
 import path from "path";
 import NowPlaying, { type ScheduleItem } from "@/components/NowPlaying";
 import SongList, { type SongListItem } from "@/components/SongList";
+import StatsCards from "@/components/StatsCards";
 
 export const dynamic = "force-dynamic";
 
@@ -160,6 +161,7 @@ export default function TimetablePage() {
     display_name: song.source === "DM" && song.display_name === "匿名" ? "匿名" : song.display_name || song.user,
     user: song.user,
     source: song.source,
+    duration_sec: song.duration_sec || 0,
     start_label: `▶ ${formatTime(new Date(schedule[idx].startMs))}`,
     duration_label: formatDuration(song.duration_sec),
     url: song.url,
@@ -177,20 +179,13 @@ export default function TimetablePage() {
         </p>
       </div>
 
-      {/* 統計カード */}
-      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {[
-          { label: "収録曲数", value: `${data.total_songs}曲` },
-          { label: "総再生時間", value: formatTotal(data.total_sec) },
-          { label: "開始予定", value: "8/10（月）19:00:00" },
-          { label: "終了予定", value: formatDateTime(endAt) },
-        ].map((s) => (
-          <div key={s.label} className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-4 text-center">
-            <div className="text-sm font-black text-amber-400">{s.value}</div>
-            <div className="mt-1 text-xs text-zinc-500">{s.label}</div>
-          </div>
-        ))}
-      </div>
+      {/* 統計カード（放送開始後は実際の開始時刻に自動追従） */}
+      <StatsCards
+        totalSongs={data.total_songs}
+        totalSec={data.total_sec}
+        startDateMs={START_DATE.getTime()}
+        durations={order.map((s) => s.duration_sec || 0)}
+      />
 
       {/* 決定状態 */}
       <div className="mt-4 flex items-center justify-center gap-2 text-sm text-zinc-400">
@@ -210,7 +205,7 @@ export default function TimetablePage() {
           まだ再生順が決定されていません。
         </div>
       ) : (
-        <SongList songs={listItems} />
+        <SongList songs={listItems} startDateMs={START_DATE.getTime()} />
       )}
 
       <p className="mt-8 text-center text-xs leading-relaxed text-zinc-600">
