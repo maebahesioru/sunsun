@@ -23,6 +23,52 @@ PLAYLIST_CSV = os.path.join(BASE_DIR, "public", "data", "playlist.csv")
 
 JST = timezone(timedelta(hours=9))
 
+
+def load_env_file():
+    """.env.local を読み込む（本番サイト同期設定）"""
+    env_path = os.path.join(BASE_DIR, ".env.local")
+    if os.path.exists(env_path):
+        with open(env_path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    os.environ.setdefault(k.strip(), v.strip())
+
+
+load_env_file()
+
+
+def sync_playlist_to_site():
+    """本番サイト（Coolify）に番組表データをアップロードする（デプロイ不要で反映）"""
+    url = os.environ.get("SITE_SYNC_URL", "").strip()
+    token = os.environ.get("SITE_SYNC_TOKEN", "").strip()
+    if not url or not token:
+        print("⚠️ SITE_SYNC_URL / SITE_SYNC_TOKEN 未設定のため本番同期スキップ")
+        return
+    try:
+        import urllib.request
+
+        songs = json.load(open(SONGS_JSON, encoding="utf-8"))
+        csv_text = open(PLAYLIST_CSV, encoding="utf-8").read()
+        payload = json.dumps(
+            {"type": "playlist", "songs_json": songs, "playlist_csv": csv_text}
+        ).encode("utf-8")
+        req = urllib.request.Request(
+            url,
+            data=payload,
+            headers={"Content-Type": "application/json", "X-API-Key": token},
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=10) as res:
+            result = json.loads(res.read())
+        if result.get("ok"):
+            print("✅ 本番サイトに番組表を同期しました（デプロイ不要）")
+        else:
+            print("⚠️ 本番同期レスポンス異常:", str(result)[:100])
+    except Exception as e:
+        print(f"⚠️ 本番同期失敗: {str(e)[:100]}")
+
 # 特別固定: 【淫ミュ】YAJU&U は9日→10日の日付跨ぎ位置に配置（新規が来ても維持）
 # 再生開始から0:57の位置（開始 + 57秒）がちょうど0:00になるよう、開始を23:59:03に合わせる
 MIDNIGHT_CROSS_URL = "https://www.youtube.com/watch?v=niKAylKNIEI"
@@ -169,6 +215,7 @@ def main() -> int:
         with open(PLAYLIST_CSV, "w", encoding="utf-8") as f:
             f.write(csv_text)
         print("✅ 新曲はありません（日付跨ぎ固定曲の位置を維持しました）")
+        sync_playlist_to_site()
         return 0
 
     random.seed()
@@ -209,6 +256,7 @@ def main() -> int:
     print(f"✅ 新曲 {len(new_songs)} 曲をランダム位置に挿入しました")
     print(f"   曲数: {len(existing)}曲 / 総時間: {total_sec:.0f}秒")
     print(f"   実行日時: {now}")
+    sync_playlist_to_site()
     return 0
 
 

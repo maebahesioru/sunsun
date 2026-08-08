@@ -30,6 +30,7 @@ export async function GET() {
 
 /**
  * ローカルの放送スクリプトから現在再生中の曲情報を受信して保存する。
+ * body.type === "playlist" の場合は番組表データ（songs.json + playlist.csv）を保存する。
  * 認証: X-API-Key ヘッダー（環境変数 SYNC_TOKEN と一致必須）
  */
 export async function POST(request: Request) {
@@ -40,11 +41,28 @@ export async function POST(request: Request) {
   }
   try {
     const body = await request.json();
-    if (!body || typeof body.song_idx !== "number") {
+    if (!body) {
       return NextResponse.json({ error: "invalid" }, { status: 400 });
     }
     const dir = path.join(process.cwd(), "public", "data");
     mkdirSync(dir, { recursive: true });
+
+    // 番組表データの同期（デプロイ不要で番組表を更新）
+    if (body.type === "playlist") {
+      if (typeof body.songs_json !== "object" || typeof body.playlist_csv !== "string") {
+        return NextResponse.json({ error: "invalid" }, { status: 400 });
+      }
+      const songsPath = path.join(dir, "songs.json");
+      const csvPath = path.join(dir, "playlist.csv");
+      writeFileSync(songsPath, JSON.stringify(body.songs_json, null, 1), "utf-8");
+      writeFileSync(csvPath, body.playlist_csv, "utf-8");
+      return NextResponse.json({ ok: true });
+    }
+
+    // 現在再生中の曲情報の同期
+    if (typeof body.song_idx !== "number") {
+      return NextResponse.json({ error: "invalid" }, { status: 400 });
+    }
     const p = path.join(dir, "now_playing.json");
     writeFileSync(p, JSON.stringify(body, null, 2), "utf-8");
     return NextResponse.json({ ok: true });
