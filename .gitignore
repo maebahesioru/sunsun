@@ -20,6 +20,13 @@
 # production
 /build
 
+# broadcast (Cookie・音声キャッシュ・PID・ログは絶対にコミットしない)
+/scripts/broadcast/cookies/
+/scripts/broadcast/audio_cache/
+/scripts/broadcast/*.pid
+/scripts/broadcast/*.txt
+/scripts/broadcast/player_log.txt
+
 # misc
 .DS_Store
 *.pem
@@ -39,3 +46,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# python
+__pycache__/
+*.pyc

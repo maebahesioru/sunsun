@@ -1,0 +1,24 @@
+{
+  "name": "マニアスプレッダーのサンサンサンデー2026",
+  "short_name": "サンサンサンデー2026",
+  "description": "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル。2026年8月9日（日）19時より@maebahesioru2のXスペースで開催。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#f59e0b",
+  "lang": "ja",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
