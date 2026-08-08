@@ -27,6 +27,21 @@ sys.path.insert(0, r"C:\Users\maeba\AppData\Local\Temp\twifork")
 COOKIE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "cookies", "okubahesioru_cookie.txt")
 PLAYLIST = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "public", "data", "playlist.csv")
 NOW_PLAYING = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), "public", "data", "now_playing.json")
+
+
+def load_env_file():
+    """.env.local を読み込む（本番サイト同期設定）"""
+    env_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))), ".env.local")
+    if os.path.exists(env_path):
+        with open(env_path, encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    os.environ.setdefault(k.strip(), v.strip())
+
+
+load_env_file()
 AUDIO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "audio_cache")
 JST = timezone(timedelta(hours=9))
 START = datetime(2026, 8, 9, 19, 0, 0, tzinfo=JST)
@@ -271,6 +286,27 @@ def load_playlist():
     return songs
 
 
+async def sync_remote_now_playing(data: dict):
+    """本番サイト（Coolify）に現在再生中の曲を同期する（失敗しても放送は継続）"""
+    url = os.environ.get("SITE_SYNC_URL", "").strip()
+    token = os.environ.get("SITE_SYNC_TOKEN", "").strip()
+    if not url or not token:
+        return
+    try:
+        import urllib.request
+
+        req = urllib.request.Request(
+            url,
+            data=json.dumps(data).encode("utf-8"),
+            headers={"Content-Type": "application/json", "X-API-Key": token},
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=5) as res:
+            res.read()
+    except Exception as e:
+        print(f"[sync] remote sync failed: {str(e)[:80]}", flush=True)
+
+
 async def write_now_playing(idx: int, song: dict, start_ts: float):
     """サイト同期用の now_playing.json と再開用の state.json を書き出す"""
     data = {
@@ -287,6 +323,7 @@ async def write_now_playing(idx: int, song: dict, start_ts: float):
     os.replace(tmp, NOW_PLAYING)
     save_state(idx, start_ts)
     print(f"[sync] now_playing: {song['idx']}番 {song['title'][:30]}", flush=True)
+    await sync_remote_now_playing(data)
 
 
 async def detect_maeba_space(client):
