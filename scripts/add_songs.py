@@ -40,32 +40,58 @@ load_env_file()
 
 
 def sync_playlist_to_site():
-    """本番サイト（Coolify）に番組表データをアップロードする（デプロイ不要で反映）"""
-    url = os.environ.get("SITE_SYNC_URL", "").strip()
-    token = os.environ.get("SITE_SYNC_TOKEN", "").strip()
-    if not url or not token:
-        print("⚠️ SITE_SYNC_URL / SITE_SYNC_TOKEN 未設定のため本番同期スキップ")
+    """本番サイト（Coolifyコンテナ）に番組表データを直接コピー（デプロイ不要・WAF回避）
+
+    .env.local の設定:
+      SITE_SYNC_HOST=192.168.1.73
+      SITE_SYNC_USER=debian
+      SITE_SYNC_KEY=<pve_keyのパス>
+      SITE_SYNC_CONTAINER_PREFIX=ih22mv9tfp1u0z8hlyodsv7j
+    """
+    import shutil
+    import subprocess
+    import tempfile
+
+    host = os.environ.get("SITE_SYNC_HOST", "").strip()
+    user = os.environ.get("SITE_SYNC_USER", "").strip()
+    key = os.environ.get("SITE_SYNC_KEY", "").strip()
+    prefix = os.environ.get("SITE_SYNC_CONTAINER_PREFIX", "").strip()
+    if not host or not user or not key or not prefix:
+        print("⚠️ SSH同期設定が不足（SITE_SYNC_HOST / SITE_SYNC_USER / SITE_SYNC_KEY / SITE_SYNC_CONTAINER_PREFIX）")
         return
     try:
-        import urllib.request
+        ssh_opts = ["-i", key, "-o", "StrictHostKeyChecking=no", "-o", "ConnectTimeout=10"]
+        target = f"{user}@{host}"
 
-        songs = json.load(open(SONGS_JSON, encoding="utf-8"))
-        csv_text = open(PLAYLIST_CSV, encoding="utf-8").read()
-        payload = json.dumps(
-            {"type": "playlist", "songs_json": songs, "playlist_csv": csv_text}
-        ).encode("utf-8")
-        req = urllib.request.Request(
-            url,
-            data=payload,
-            headers={"Content-Type": "application/json", "X-API-Key": token},
-            method="POST",
+        # コンテナ名を検出
+        r = subprocess.run(
+            ["ssh", *ssh_opts, target, f"sudo docker ps --format '{{{{.Names}}}}' | grep {prefix} | head -1"],
+            capture_output=True, text=True, timeout=20,
         )
-        with urllib.request.urlopen(req, timeout=10) as res:
-            result = json.loads(res.read())
-        if result.get("ok"):
-            print("✅ 本番サイトに番組表を同期しました（デプロイ不要）")
+        container = r.stdout.strip()
+        if not container:
+            print("⚠️ コンテナが見つかりません（SSH同期スキップ）")
+            return
+
+        # ローカルファイルを /tmp に送信して docker cp でコンテナにコピー
+        tmpdir = tempfile.mkdtemp()
+        local_csv = os.path.join(tmpdir, "playlist.csv")
+        local_songs = os.path.join(tmpdir, "songs.json")
+        shutil.copy(PLAYLIST_CSV, local_csv)
+        shutil.copy(SONGS_JSON, local_songs)
+        subprocess.run(
+            ["scp", *ssh_opts, local_csv, local_songs, f"{target}:/tmp/"],
+            capture_output=True, text=True, timeout=30,
+        )
+        r = subprocess.run(
+            ["ssh", *ssh_opts, target,
+             f"sudo docker cp /tmp/playlist.csv {container}:/app/public/data/ && sudo docker cp /tmp/songs.json {container}:/app/public/data/"],
+            capture_output=True, text=True, timeout=30,
+        )
+        if r.returncode == 0:
+            print(f"✅ 本番サイトに番組表を同期しました（{container}・デプロイ不要）")
         else:
-            print("⚠️ 本番同期レスポンス異常:", str(result)[:100])
+            print("⚠️ 同期失敗:", r.stderr[:100])
     except Exception as e:
         print(f"⚠️ 本番同期失敗: {str(e)[:100]}")
 

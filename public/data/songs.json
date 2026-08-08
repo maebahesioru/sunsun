@@ -3034,10 +3034,10 @@
    "id": 303,
    "user": "tobuutsunomania",
    "display_name": "東武宇都マニア",
-   "song_id": "YT:46S6Ulzchbo",
-   "title": "DA PUMP / P.A.R.T.Y. ～ユニバース・フェスティバル～ Long version",
-   "duration_sec": 275.0,
-   "url": "https://www.youtube.com/watch?v=46S6Ulzchbo",
+   "song_id": "YT:Gbspmm82Nis",
+   "title": "P.A.R.T.Y. ～ユニバース・フェスティバル～",
+   "duration_sec": 212.0,
+   "url": "https://www.youtube.com/watch?v=Gbspmm82Nis",
    "source": "リプ"
   },
   {
@@ -3663,10 +3663,10 @@
   {
    "user": "hikamarnokyouji",
    "display_name": "Z3_Maniaのサブ",
-   "song_id": "YT:P2pkuI3Mbys",
-   "title": "Ba'athist Syria Patriotic Song: God, Syria, and Bashar",
-   "duration_sec": 244,
-   "url": "https://www.youtube.com/watch?v=P2pkuI3Mbys",
+   "song_id": "YT:3bBcSBExIK8",
+   "title": "Nightcore - ",
+   "duration_sec": 136.0,
+   "url": "https://www.youtube.com/watch?v=3bBcSBExIK8",
    "source": "リプ",
    "id": 366
   },
@@ -4039,8 +4039,28 @@
    "duration_sec": 165.0,
    "url": "https://www.youtube.com/watch?v=g1B212tGl_Y",
    "source": "DM"
+  },
+  {
+   "id": 404,
+   "user": "gabon_mania2",
+   "display_name": "gabon_mania2",
+   "song_id": "YT:VyKLQXOj0ts",
+   "title": "【妖怪ウォッチ】ようかい体操第一",
+   "duration_sec": 252.0,
+   "url": "https://www.youtube.com/watch?v=VyKLQXOj0ts",
+   "source": "リプ"
+  },
+  {
+   "id": 405,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:giBJThujKDo",
+   "title": "ス・満・イ・ｸｰ!　【音mad】",
+   "duration_sec": 50.0,
+   "url": "https://www.youtube.com/watch?v=giBJThujKDo",
+   "source": "DM"
   }
  ],
- "total_songs": 403,
- "total_sec": 79862.0
+ "total_songs": 405,
+ "total_sec": 79993.0
 }
