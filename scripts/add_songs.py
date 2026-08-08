@@ -106,6 +106,48 @@ LAST_FIXED_URL = "https://mega.nz/file/1nUEHAYA"
 # 特別固定: エンディング（ed.wav）は本当の最後に配置（Love Togetherの後ろ）
 ED_FIXED_URL = "ed.wav"
 
+# 特別固定: 最後の曲の前のスピーチ（mae.wav）は Love Together の直前に配置
+SPEECH_FIXED_URL = "mae.wav"
+
+# 特別固定: 【ヒカマニ】GPT. は1曲目に配置（新規が来ても維持）
+FIRST_FIXED_URL = "https://www.youtube.com/watch?v=tPK24bDZrRc"
+
+# 特別固定: オープニング（saisyo.wav）は1曲目・GPTの前に配置（新規が来ても維持）
+OPENING_FIXED_URL = "saisyo.wav"
+
+
+def place_opening_fixed(rows):
+    """オープニングを常に1曲目に配置する（GPTの前・新規が来ても維持）"""
+    idx = None
+    for i, r in enumerate(rows):
+        if OPENING_FIXED_URL in r[5]:
+            idx = i
+            break
+    if idx is None:
+        return rows
+    song = rows.pop(idx)
+    rows.insert(0, song)
+    return rows
+
+
+def place_first_fixed(rows):
+    """【ヒカマニ】GPT. を常にオープニングの直後（2曲目）に配置する（新規が来ても維持）"""
+    idx = None
+    for i, r in enumerate(rows):
+        if FIRST_FIXED_URL in r[5]:
+            idx = i
+            break
+    if idx is None:
+        return rows
+    song = rows.pop(idx)
+    open_idx = 1
+    for i, r in enumerate(rows):
+        if OPENING_FIXED_URL in r[5]:
+            open_idx = i + 1
+            break
+    rows.insert(open_idx, song)
+    return rows
+
 
 def place_last_fixed(rows):
     """Love Together を常に最後に配置する（新規が来ても最後を維持）"""
@@ -132,6 +174,23 @@ def place_ed_fixed(rows):
         return rows
     song = rows.pop(idx)
     rows.append(song)
+    return rows
+
+
+def place_final_sequence(rows):
+    """スピーチ → Love Together → エンディング の順で最後の3曲に固定（新規が来ても維持）"""
+    speech = lt = ed = None
+    for r in rows:
+        if SPEECH_FIXED_URL in r[5]:
+            speech = r
+        elif LAST_FIXED_URL in r[5]:
+            lt = r
+        elif ED_FIXED_URL in r[5]:
+            ed = r
+    if not (speech and lt and ed):
+        return rows
+    rows = [r for r in rows if r is not speech and r is not lt and r is not ed]
+    rows.extend([speech, lt, ed])
     return rows
 
 
@@ -169,13 +228,13 @@ def place_midnight_cross(rows):
         cum_before.append(c)
         c += float(r[4]) or 0
     for swap_i in range(len(rows)):
-        if LAST_FIXED_URL in rows[swap_i][5] or ED_FIXED_URL in rows[swap_i][5]:
-            continue  # 固定曲（Love Together / エンディング）は入れ替えない
+        if LAST_FIXED_URL in rows[swap_i][5] or ED_FIXED_URL in rows[swap_i][5] or SPEECH_FIXED_URL in rows[swap_i][5] or FIRST_FIXED_URL in rows[swap_i][5] or OPENING_FIXED_URL in rows[swap_i][5]:
+            continue  # 固定曲（オープニング / GPT / スピーチ / Love Together / エンディング）は入れ替えない
         for j in range(len(rows)):
             if swap_i == j:
                 continue
-            if LAST_FIXED_URL in rows[j][5] or ED_FIXED_URL in rows[j][5]:
-                continue  # 固定曲（Love Together / エンディング）は入れ替えない
+            if LAST_FIXED_URL in rows[j][5] or ED_FIXED_URL in rows[j][5] or SPEECH_FIXED_URL in rows[j][5] or FIRST_FIXED_URL in rows[j][5] or OPENING_FIXED_URL in rows[j][5]:
+                continue  # 固定曲（オープニング / GPT / スピーチ / Love Together / エンディング）は入れ替えない
             dur_i = float(rows[swap_i][4]) or 0
             dur_j = float(rows[j][4]) or 0
             # 開始時刻（bestまでの合計）が変わるのは「前の曲を抜いて後ろの曲を入れる」場合のみ
@@ -244,9 +303,10 @@ def main() -> int:
     new_songs = [s for s in songs if s.get("url", "") not in existing_urls]
 
     if not new_songs:
-        # 新曲が無くても固定曲（Love Together / エンディング / YAJU&U）の位置は維持する
-        existing = place_last_fixed(existing)
-        existing = place_ed_fixed(existing)
+        # 新曲が無くても固定曲（オープニング / GPT / スピーチ / Love Together / エンディング / YAJU&U）の位置は維持する
+        existing = place_opening_fixed(existing)
+        existing = place_first_fixed(existing)
+        existing = place_final_sequence(existing)
         existing = place_midnight_cross(existing)
         for i, row in enumerate(existing, 1):
             row[0] = i
@@ -277,9 +337,10 @@ def main() -> int:
         existing.insert(pos, row)
         print(f"  挿入: {row[1][:45]} → {pos + 1}番目")
 
-    # 固定曲の位置を維持（Love Together → エンディング → YAJU&U）
-    existing = place_last_fixed(existing)
-    existing = place_ed_fixed(existing)
+    # 固定曲の位置を維持（オープニング → GPT → スピーチ → Love Together → エンディング → YAJU&U）
+    existing = place_opening_fixed(existing)
+    existing = place_first_fixed(existing)
+    existing = place_final_sequence(existing)
     existing = place_midnight_cross(existing)
 
     for i, row in enumerate(existing, 1):

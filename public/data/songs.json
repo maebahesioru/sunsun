@@ -1,9 +1,9 @@
 {
  "event": {
   "name": "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル",
-  "date": "2026年8月9日（日）19時ちょうど開始予定",
+  "date": "2026年8月9日（日）19時〜8月10日（月）19時",
   "place": "@maebahesioru2のXスペース",
-  "request_period": "2026年8月3日（月）22時〜8月9日（日）16時",
+  "request_period": "2026年8月3日（月）22時〜8月10日（月）19時",
   "hash_tags": [
    "#マニアスプレッダーのサンサンサンデー",
    "#マニアスプレッダーのサンサンサンデー2026野獣の日スペシャル"
@@ -2151,16 +2151,6 @@
    "source": "リプ"
   },
   {
-   "id": 215,
-   "user": "kgnsoey5wdo2twt",
-   "display_name": "冷showspeed",
-   "song_id": "YT:DHhNXNDrNbU",
-   "title": "坂本真綾 「逆光」 Music Video (Full Ver.)",
-   "duration_sec": 315.0,
-   "url": "https://www.youtube.com/watch?v=DHhNXNDrNbU",
-   "source": "リプ"
-  },
-  {
    "id": 216,
    "user": "kitigaimania",
    "display_name": "キッチン_mania",
@@ -4169,8 +4159,88 @@
    "duration_sec": 58.3,
    "url": "ed.wav",
    "source": "特殊"
+  },
+  {
+   "id": 418,
+   "user": "十字架_mania",
+   "display_name": "十字架_mania",
+   "song_id": "URL:mae.wav",
+   "title": "最後の曲の前のスピーチ",
+   "duration_sec": 34.2,
+   "url": "mae.wav",
+   "source": "特殊"
+  },
+  {
+   "id": 419,
+   "user": "十字架_mania",
+   "display_name": "十字架_mania",
+   "song_id": "URL:saisyo.wav",
+   "title": "オープニング",
+   "duration_sec": 74.4,
+   "url": "saisyo.wav",
+   "source": "特殊"
+  },
+  {
+   "id": 420,
+   "user": "4TpPv54yav31685",
+   "display_name": "佐TENGA",
+   "song_id": "YT:j0XwN7EuKvY",
+   "title": "03:No buts !／川田まみ（Audio)",
+   "duration_sec": 218.0,
+   "url": "https://www.youtube.com/watch?v=j0XwN7EuKvY",
+   "source": "リプ"
+  },
+  {
+   "id": 421,
+   "user": "4TpPv54yav31685",
+   "display_name": "佐TENGA",
+   "song_id": "YT:LFInhUiyW84",
+   "title": "いわれなきヒカマニ",
+   "duration_sec": 55.0,
+   "url": "https://www.youtube.com/watch?v=LFInhUiyW84",
+   "source": "リプ"
+  },
+  {
+   "id": 422,
+   "user": "Tib_main_kari",
+   "display_name": "仮_",
+   "song_id": "YT:lkmpWJJCcfc",
+   "title": "【音mad】エンジェred♪リーム",
+   "duration_sec": 161.0,
+   "url": "https://www.youtube.com/watch?v=lkmpWJJCcfc",
+   "source": "リプ"
+  },
+  {
+   "id": 423,
+   "user": "bath_mania99",
+   "display_name": "風呂マニ",
+   "song_id": "YT:2TU72uQ6NLo",
+   "title": "ゆめうつつ - Daydream",
+   "duration_sec": 305.0,
+   "url": "https://www.youtube.com/watch?v=2TU72uQ6NLo",
+   "source": "リプ"
+  },
+  {
+   "id": 424,
+   "user": "7095110mank",
+   "display_name": "☦︎︎⟡.·ヒカキン光輪.· ⟡☦︎︎",
+   "song_id": "YT:rOOloM27AFM",
+   "title": "かめりあ(Camellia) - Observatory [From Paradigm: Reboot]",
+   "duration_sec": 210.0,
+   "url": "https://www.youtube.com/watch?v=rOOloM27AFM",
+   "source": "リプ"
+  },
+  {
+   "id": 425,
+   "user": "kgnsoey5wdo2twt",
+   "display_name": "冷showspeed",
+   "song_id": "YT:QEDfIUdBods",
+   "title": "坂本 真綾 - 色彩",
+   "duration_sec": 274.0,
+   "url": "https://www.youtube.com/watch?v=QEDfIUdBods",
+   "source": "リプ"
   }
  ],
- "total_songs": 416,
- "total_sec": 82102.3
+ "total_songs": 423,
+ "total_sec": 83118.9
 }
