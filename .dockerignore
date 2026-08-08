@@ -1,0 +1,10 @@
+node_modules
+.next
+.git
+scripts/broadcast/audio_cache
+scripts/broadcast/cookies
+*.txt
+*.log
+*.pem
+__pycache__
+*.pyc
