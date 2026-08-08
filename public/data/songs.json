@@ -3711,16 +3711,6 @@
    "source": "DM"
   },
   {
-   "id": 371,
-   "user": "mani83073",
-   "display_name": "mani83073",
-   "song_id": "X:2083550939110359490",
-   "title": "ニコニコ用の動画作成中",
-   "duration_sec": 54.0,
-   "url": "https://x.com/mani83073/status/2083550939110359490",
-   "source": "DM"
-  },
-  {
    "id": 372,
    "user": "TETRIS_Love47",
    "display_name": "どっかの誰かさん",
@@ -4059,8 +4049,128 @@
    "duration_sec": 50.0,
    "url": "https://www.youtube.com/watch?v=giBJThujKDo",
    "source": "DM"
+  },
+  {
+   "id": 406,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:DtBoAqkIJzI",
+   "title": "幽霊東京 / Ayase (self cover)",
+   "duration_sec": 209.0,
+   "url": "https://www.youtube.com/watch?v=DtBoAqkIJzI",
+   "source": "DM"
+  },
+  {
+   "id": 407,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:-P_B2AC5WJM",
+   "title": "Mashiro Ayano - ideal white",
+   "duration_sec": 260.0,
+   "url": "https://www.youtube.com/watch?v=-P_B2AC5WJM",
+   "source": "DM"
+  },
+  {
+   "id": 408,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:p62b76pmbC0",
+   "title": "【音MAD】海 月 卵",
+   "duration_sec": 211.0,
+   "url": "https://www.youtube.com/watch?v=p62b76pmbC0",
+   "source": "DM"
+  },
+  {
+   "id": 409,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "NICO:sm42362806",
+   "title": "もしも今日が人生最後の日ならば　悔いの無い人生過ごしたと言えますか？ｗ",
+   "duration_sec": 142.0,
+   "url": "https://www.nicovideo.jp/watch/sm42362806",
+   "source": "DM"
+  },
+  {
+   "id": 410,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:DSQjbJhG40k",
+   "title": "The King of Fighters '97 Arranged Soundtrack (AST) 04- Psycho Soldier Remix '97 (Athena Theme)",
+   "duration_sec": 281.0,
+   "url": "https://www.youtube.com/watch?v=DSQjbJhG40k",
+   "source": "DM"
+  },
+  {
+   "id": 411,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:flVVZb3v5-U",
+   "title": "Snow Castle",
+   "duration_sec": 112.0,
+   "url": "https://www.youtube.com/watch?v=flVVZb3v5-U",
+   "source": "DM"
+  },
+  {
+   "id": 412,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:Ej7VO0Q7qy4",
+   "title": "【MAD/AMV】とある科学の超電磁砲 OP1『Only My Railgun』中日歌詞 | 4K",
+   "duration_sec": 254.0,
+   "url": "https://www.youtube.com/watch?v=Ej7VO0Q7qy4",
+   "source": "DM"
+  },
+  {
+   "id": 413,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:rbWqgh_sZms",
+   "title": "核P-MODEL  PHASE-0  「ENG Lyrics」",
+   "duration_sec": 220.0,
+   "url": "https://www.youtube.com/watch?v=rbWqgh_sZms",
+   "source": "DM"
+  },
+  {
+   "id": 414,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:W3j2FaYhrUY",
+   "title": "[Cytus II/Groove Coaster] FUJIN Rumble - COSIO(ZUNTATA) (HQ)",
+   "duration_sec": 125.0,
+   "url": "https://www.youtube.com/watch?v=W3j2FaYhrUY",
+   "source": "DM"
+  },
+  {
+   "id": 415,
+   "user": "iinyoisogo",
+   "display_name": "タローマン_mania",
+   "song_id": "YT:8f8PguX_C5o",
+   "title": "2017年度天才てれびくんYOUエンディング 「たてっ！よこっ！ななめっ！みんなのちから！」",
+   "duration_sec": 90.0,
+   "url": "https://www.youtube.com/watch?v=8f8PguX_C5o",
+   "source": "リプ"
+  },
+  {
+   "id": 416,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:og43-7QUphw",
+   "title": "No Motherland Without You [Subtitles]",
+   "duration_sec": 201.0,
+   "url": "https://www.youtube.com/watch?v=og43-7QUphw",
+   "source": "DM"
+  },
+  {
+   "id": 417,
+   "user": "十字架_mania",
+   "display_name": "十字架_mania",
+   "song_id": "URL:ed.wav",
+   "title": "エンディング",
+   "duration_sec": 58.3,
+   "url": "ed.wav",
+   "source": "特殊"
   }
  ],
- "total_songs": 405,
- "total_sec": 79993.0
+ "total_songs": 416,
+ "total_sec": 82102.3
 }

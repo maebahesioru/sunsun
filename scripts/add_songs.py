@@ -103,12 +103,29 @@ MIDNIGHT_SEC = 5 * 3600 - 57  # 0:00の57秒前 = 開始から17,943秒（YAJU&U
 # 特別固定: Love Together（？？？・MEGA）は常に最後に配置（新規が来ても維持）
 LAST_FIXED_URL = "https://mega.nz/file/1nUEHAYA"
 
+# 特別固定: エンディング（ed.wav）は本当の最後に配置（Love Togetherの後ろ）
+ED_FIXED_URL = "ed.wav"
+
 
 def place_last_fixed(rows):
     """Love Together を常に最後に配置する（新規が来ても最後を維持）"""
     idx = None
     for i, r in enumerate(rows):
         if LAST_FIXED_URL in r[5]:
+            idx = i
+            break
+    if idx is None:
+        return rows
+    song = rows.pop(idx)
+    rows.append(song)
+    return rows
+
+
+def place_ed_fixed(rows):
+    """エンディングを常に本当の最後に配置する（Love Togetherの後ろ・新規が来ても維持）"""
+    idx = None
+    for i, r in enumerate(rows):
+        if ED_FIXED_URL in r[5]:
             idx = i
             break
     if idx is None:
@@ -152,13 +169,13 @@ def place_midnight_cross(rows):
         cum_before.append(c)
         c += float(r[4]) or 0
     for swap_i in range(len(rows)):
-        if LAST_FIXED_URL in rows[swap_i][5]:
-            continue  # 最後固定曲（Love Together）は入れ替えない
+        if LAST_FIXED_URL in rows[swap_i][5] or ED_FIXED_URL in rows[swap_i][5]:
+            continue  # 固定曲（Love Together / エンディング）は入れ替えない
         for j in range(len(rows)):
             if swap_i == j:
                 continue
-            if LAST_FIXED_URL in rows[j][5]:
-                continue  # 最後固定曲（Love Together）は入れ替えない
+            if LAST_FIXED_URL in rows[j][5] or ED_FIXED_URL in rows[j][5]:
+                continue  # 固定曲（Love Together / エンディング）は入れ替えない
             dur_i = float(rows[swap_i][4]) or 0
             dur_j = float(rows[j][4]) or 0
             # 開始時刻（bestまでの合計）が変わるのは「前の曲を抜いて後ろの曲を入れる」場合のみ
@@ -227,8 +244,9 @@ def main() -> int:
     new_songs = [s for s in songs if s.get("url", "") not in existing_urls]
 
     if not new_songs:
-        # 新曲が無くても最後固定曲（Love Together）と日付跨ぎ固定曲（YAJU&U）の位置は維持する
+        # 新曲が無くても固定曲（Love Together / エンディング / YAJU&U）の位置は維持する
         existing = place_last_fixed(existing)
+        existing = place_ed_fixed(existing)
         existing = place_midnight_cross(existing)
         for i, row in enumerate(existing, 1):
             row[0] = i
@@ -259,9 +277,9 @@ def main() -> int:
         existing.insert(pos, row)
         print(f"  挿入: {row[1][:45]} → {pos + 1}番目")
 
-    # 最後固定曲の位置を維持（Love Together）
+    # 固定曲の位置を維持（Love Together → エンディング → YAJU&U）
     existing = place_last_fixed(existing)
-    # 日付跨ぎ固定曲の位置を維持（YAJU&U）
+    existing = place_ed_fixed(existing)
     existing = place_midnight_cross(existing)
 
     for i, row in enumerate(existing, 1):

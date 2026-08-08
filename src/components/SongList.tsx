@@ -97,10 +97,12 @@ export default function SongList({ songs }: { songs: SongListItem[] }) {
                   className={`rounded px-1.5 py-0.5 text-[10px] font-bold ${
                     song.source === "DM"
                       ? "bg-purple-500/20 text-purple-300"
-                      : "bg-sky-500/20 text-sky-300"
+                      : song.source === "特殊"
+                        ? "bg-amber-500/20 text-amber-300"
+                        : "bg-sky-500/20 text-sky-300"
                   }`}
                 >
-                  {song.source === "DM" ? "匿名DM" : "リプライ"}
+                  {song.source === "DM" ? "匿名DM" : song.source === "特殊" ? "特殊" : "リプライ"}
                 </span>
               </div>
             </div>
