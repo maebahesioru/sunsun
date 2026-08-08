@@ -3,7 +3,7 @@
   "name": "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル",
   "date": "2026年8月10日（月）19時ちょうど開始予定",
   "place": "@maebahesioru2のXスペース",
-  "request_period": "2026年8月3日（月）22時〜8月10日（月）19時",
+  "request_period": "2026年8月3日（月）22時〜8月10日（月）18時半",
   "hash_tags": [
    "#マニアスプレッダーのサンサンサンデー",
    "#マニアスプレッダーのサンサンサンデー2026野獣の日スペシャル"
@@ -4239,8 +4239,68 @@
    "duration_sec": 274.0,
    "url": "https://www.youtube.com/watch?v=QEDfIUdBods",
    "source": "リプ"
+  },
+  {
+   "id": 426,
+   "user": "bath_mania99",
+   "display_name": "風呂マニ",
+   "song_id": "YT:CPqroobt0SA",
+   "title": "ユーモア / King Gnu",
+   "duration_sec": 206.0,
+   "url": "https://www.youtube.com/watch?v=CPqroobt0SA",
+   "source": "リプ"
+  },
+  {
+   "id": 427,
+   "user": "hrhrmania",
+   "display_name": "【公式】はろまに 🍥",
+   "song_id": "YT:SIuF37EWaLU",
+   "title": "東京フラッシュ / Vaundy ：MUSIC VIDEO",
+   "duration_sec": 262.0,
+   "url": "https://www.youtube.com/watch?v=SIuF37EWaLU",
+   "source": "リプ"
+  },
+  {
+   "id": 428,
+   "user": "tesenoo",
+   "display_name": "てせの",
+   "song_id": "YT:K-wLVh-czMc",
+   "title": "【Sonic_mania】ヒカマニ×シティエスケープ",
+   "duration_sec": 91.0,
+   "url": "https://www.youtube.com/watch?v=K-wLVh-czMc",
+   "source": "リプ"
+  },
+  {
+   "id": 429,
+   "user": "tesenoo",
+   "display_name": "てせの",
+   "song_id": "YT:tJjxKhjR9H4",
+   "title": "Endless Possibility - Sonic Unleashed [OST]",
+   "duration_sec": 248.0,
+   "url": "https://www.youtube.com/watch?v=tJjxKhjR9H4",
+   "source": "リプ"
+  },
+  {
+   "id": 430,
+   "user": "3dmania2011",
+   "display_name": "3d_mania",
+   "song_id": "YT:XGvQghwuuS0",
+   "title": "【音MAD】悔ーマニ・エンゲイザー",
+   "duration_sec": 236.0,
+   "url": "https://www.youtube.com/watch?v=XGvQghwuuS0",
+   "source": "リプ"
+  },
+  {
+   "id": 431,
+   "user": "ginanagi25",
+   "display_name": "フェアぎな🫶",
+   "song_id": "YT:P31CxorjHjI",
+   "title": "jo0ji「I-BULL」Music Video | TVアニメ最終クール『BLEACH千年血戦篇-禍進譚-』 オープニングテーマ",
+   "duration_sec": 248.0,
+   "url": "https://www.youtube.com/watch?v=P31CxorjHjI",
+   "source": "リプ"
   }
  ],
- "total_songs": 423,
- "total_sec": 83118.9
+ "total_songs": 429,
+ "total_sec": 84409.9
 }

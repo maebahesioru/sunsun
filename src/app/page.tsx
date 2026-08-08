@@ -131,7 +131,7 @@ export default function Home() {
           {[
             { label: "開催日時", value: "2026年8月10日（月）19時ちょうど開始予定", icon: "🕖" },
             { label: "開催場所", value: "@maebahesioru2のXスペース", icon: "📍" },
-            { label: "リクエスト受付", value: "8月3日（月）22時 〜 8月10日（月）19時", icon: "📨" },
+            { label: "リクエスト受付", value: "8月3日（月）22時 〜 8月10日（月）18時半", icon: "📨" },
           ].map((item) => (
             <div key={item.label} className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5">
               <div className="text-2xl">{item.icon}</div>
