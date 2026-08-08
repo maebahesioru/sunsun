@@ -44,7 +44,7 @@ def load_env_file():
 load_env_file()
 AUDIO_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "audio_cache")
 JST = timezone(timedelta(hours=9))
-START = datetime(2026, 8, 9, 19, 0, 0, tzinfo=JST)
+START = datetime(2026, 8, 10, 19, 0, 0, tzinfo=JST)
 MAEBA_ID = "1910278629000712192"
 
 os.makedirs(AUDIO_DIR, exist_ok=True)

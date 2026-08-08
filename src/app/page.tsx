@@ -55,7 +55,7 @@ export default function Home() {
     totalSec = songsJson.total_sec || 0;
   } catch {}
 
-  const eventStart = new Date("2026-08-09T19:00:00+09:00");
+  const eventStart = new Date("2026-08-10T19:00:00+09:00");
   const eventEnd = new Date(eventStart.getTime() + totalSec * 1000);
 
   const eventJsonLd = {
@@ -129,7 +129,7 @@ export default function Home() {
         </h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-3">
           {[
-            { label: "開催日時", value: "2026年8月9日（日）19時〜8月10日（月）19時", icon: "🕖" },
+            { label: "開催日時", value: "2026年8月10日（月）19時ちょうど開始予定", icon: "🕖" },
             { label: "開催場所", value: "@maebahesioru2のXスペース", icon: "📍" },
             { label: "リクエスト受付", value: "8月3日（月）22時 〜 8月10日（月）19時", icon: "📨" },
           ].map((item) => (

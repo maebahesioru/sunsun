@@ -106,7 +106,7 @@ function formatTime(date: Date): string {
 }
 
 // 放送開始時刻（19時ちょうど開始の場合）
-const START_DATE = new Date("2026-08-09T19:00:00+09:00");
+const START_DATE = new Date("2026-08-10T19:00:00+09:00");
 
 export default function TimetablePage() {
   const dataDir = path.join(process.cwd(), "public", "data");
@@ -175,8 +175,8 @@ export default function TimetablePage() {
         {[
           { label: "収録曲数", value: `${data.total_songs}曲` },
           { label: "総再生時間", value: formatTotal(data.total_sec) },
-          { label: "開始予定", value: "8/9（日）19:00:00" },
-          { label: "終了予定", value: "8/10（月）19:00:00" },
+          { label: "開始予定", value: "8/10（月）19:00:00" },
+          { label: "終了予定", value: "8/11（月）19:00:00" },
         ].map((s) => (
           <div key={s.label} className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-4 text-center">
             <div className="text-sm font-black text-amber-400">{s.value}</div>
