@@ -1,4 +1,4 @@
-import { readFileSync, existsSync, writeFileSync, mkdirSync } from "fs";
+import { readFileSync, existsSync, writeFileSync, mkdirSync, rmSync } from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
 import { headers } from "next/headers";
@@ -69,4 +69,21 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json({ error: "invalid" }, { status: 400 });
   }
+}
+
+/**
+ * 放送終了時に now_playing.json を削除する（「放送中」表示を消す）。
+ * 認証: X-API-Key ヘッダー（環境変数 SYNC_TOKEN と一致必須）
+ */
+export async function DELETE() {
+  const h = await headers();
+  const token = h.get("x-api-key") || "";
+  if (!SYNC_TOKEN || token !== SYNC_TOKEN) {
+    return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+  const p = path.join(process.cwd(), "public", "data", "now_playing.json");
+  if (existsSync(p)) {
+    rmSync(p);
+  }
+  return NextResponse.json({ ok: true });
 }

@@ -195,7 +195,7 @@ class PlaylistTrack(AudioStreamTrack):
                 print(f"[track] ▶ {self._current+1}/{len(self.songs)}: {self.songs[self._current]['title'][:40]}", flush=True)
                 if self.on_song_change:
                     try:
-                        await self.on_song_change(self._current, self.songs[self._current])
+                        await self.on_song_change(self._current, self.songs[self._current], time.time())
                     except Exception as e:
                         print(f"[track] on_song_change err: {str(e)[:80]}", flush=True)
                 # 次の曲をプリフェッチ
@@ -298,7 +298,11 @@ async def sync_remote_now_playing(data: dict):
         req = urllib.request.Request(
             url,
             data=json.dumps(data).encode("utf-8"),
-            headers={"Content-Type": "application/json", "X-API-Key": token},
+            headers={
+                "Content-Type": "application/json",
+                "X-API-Key": token,
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+            },
             method="POST",
         )
         with urllib.request.urlopen(req, timeout=5) as res:
@@ -324,6 +328,30 @@ async def write_now_playing(idx: int, song: dict, start_ts: float):
     save_state(idx, start_ts)
     print(f"[sync] now_playing: {song['idx']}番 {song['title'][:30]}", flush=True)
     await sync_remote_now_playing(data)
+
+
+async def clear_remote_now_playing():
+    """放送終了時に本番サイトの now_playing.json を削除する（「放送中」表示を消す）"""
+    url = os.environ.get("SITE_SYNC_URL", "").strip()
+    token = os.environ.get("SITE_SYNC_TOKEN", "").strip()
+    if not url or not token:
+        return
+    try:
+        import urllib.request
+
+        req = urllib.request.Request(
+            url,
+            headers={
+                "X-API-Key": token,
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
+            },
+            method="DELETE",
+        )
+        with urllib.request.urlopen(req, timeout=5) as res:
+            res.read()
+        print("[sync] remote now_playing cleared", flush=True)
+    except Exception as e:
+        print(f"[sync] remote clear failed: {str(e)[:80]}", flush=True)
 
 
 async def detect_maeba_space(client):
@@ -410,6 +438,7 @@ async def main():
 
     await session.close()
     clear_state()
+    await clear_remote_now_playing()
     await client.http.aclose()
     print("[DONE] 放送終了", flush=True)
 
