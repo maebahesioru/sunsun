@@ -61,12 +61,27 @@ export default function DownloadPage() {
                 {f.desc}・{f.size}
               </div>
             </div>
-            <a
-              href={`/api/download?file=${f.file}`}
-              className="shrink-0 rounded-xl bg-amber-500 px-4 py-2 text-xs font-bold text-zinc-950 transition hover:bg-amber-400"
-            >
-              ⬇ ダウンロード
-            </a>
+            <div className="flex shrink-0 items-center gap-2">
+              {f.file.endsWith(".m4a") && (
+                <details className="shrink-0">
+                  <summary className="cursor-pointer rounded-xl border border-zinc-700 px-3 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-300">
+                    ▶ サイト内再生
+                  </summary>
+                  <audio
+                    controls
+                    preload="none"
+                    src={`/api/download?file=${f.file}&play=1`}
+                    className="fixed bottom-16 left-1/2 z-50 w-[min(90vw,560px)] -translate-x-1/2 rounded-xl bg-zinc-900/95 p-2 shadow-2xl ring-1 ring-zinc-700"
+                  />
+                </details>
+              )}
+              <a
+                href={`/api/download?file=${f.file}`}
+                className="shrink-0 rounded-xl bg-amber-500 px-4 py-2 text-xs font-bold text-zinc-950 transition hover:bg-amber-400"
+              >
+                ⬇ ダウンロード
+              </a>
+            </div>
           </div>
         ))}
       </div>
