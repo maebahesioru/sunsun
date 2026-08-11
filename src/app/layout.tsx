@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import "./globals.css";
 
-const siteUrl = process.env.SITE_URL || "http://localhost:3100";
+const siteUrl =
+  process.env.SITE_URL || "https://sunsunsunday.hikamer.f5.si";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
     template: "%s | マニアスプレッダーのサンサンサンデー2026",
   },
   description:
-    "マニアスプレッダーのサンサンサンデー2026公式サイト。2026年8月9日（日）19時より@maebahesioru2のXスペースで開催。ヒカマー界隈の音MAD・VTuber楽曲・不謹慎系音声まで何でもありのオールナイト音楽リクエスト配信。",
+    "マニアスプレッダーのサンサンサンデー2026公式サイト。2026年8月10日（月）19時より@maebahesioru2のXスペースで開催。ヒカマー界隈の音MAD・VTuber楽曲・不謹慎系音声まで何でもありのオールナイト音楽リクエスト配信。",
   keywords: [
     "サンサンサンデー",
     "マニアスプレッダー",
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
     siteName: "マニアスプレッダーのサンサンサンデー2026",
     title: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル",
     description:
-      "2026年8月9日（日）19時より@maebahesioru2のXスペースで開催！ヒカマー界隈のオールナイト音楽リクエスト配信。",
+      "2026年8月10日（月）19時より@maebahesioru2のXスペースで開催！ヒカマー界隈のオールナイト音楽リクエスト配信。",
     images: [
       {
         url: "/og.png",
@@ -61,7 +62,7 @@ export const metadata: Metadata = {
     creator: "@maebahesioru2",
     title: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル",
     description:
-      "2026年8月9日（日）19時より@maebahesioru2のXスペースで開催！リクエスト受付中！",
+      "2026年8月10日（月）19時より@maebahesioru2のXスペースで開催！リクエスト受付中！",
     images: ["/og.png"],
   },
   robots: {
@@ -93,6 +94,33 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body className="bg-zinc-950 text-zinc-100 antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "MusicEvent",
+              name: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル",
+              startDate: "2026-08-10T19:00:00+09:00",
+              endDate: "2026-08-11T23:00:00+09:00",
+              eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
+              eventStatus: "https://schema.org/EventScheduled",
+              location: {
+                "@type": "VirtualLocation",
+                url: "https://x.com/i/spaces/1rGmqpqpjngGy",
+              },
+              description:
+                "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル。@maebahesioru2のXスペースで開催するオールナイト音楽リクエスト配信。ヒカマー界隈の音MAD・VTuber楽曲・不謹慎系音声まで何でもあり。",
+              organizer: {
+                "@type": "Organization",
+                name: "マニアスプレッダーのサンサンサンデー実行委員会",
+                url: "https://x.com/maebahesioru2",
+              },
+              image: `${siteUrl}/og.png`,
+              url: siteUrl,
+            }),
+          }}
+        />
         <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur">
           <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
             <Link href="/" className="flex items-center gap-2 font-bold tracking-tight">
