@@ -2674,10 +2674,10 @@
    "id": 268,
    "user": "potato_mania810",
    "display_name": "ほくほくポテト_mania",
-   "song_id": "YT:XMkQggvVFsE",
-   "title": "『back shot』/ 音田雅則",
-   "duration_sec": 185.0,
-   "url": "https://www.youtube.com/watch?v=XMkQggvVFsE",
+   "song_id": "YT:mH2wmyeiIpA",
+   "title": "Cyberpunk: Edgerunners | This Fffire by Franz Ferdinand | Music Video",
+   "duration_sec": 212.0,
+   "url": "https://www.youtube.com/watch?v=mH2wmyeiIpA",
    "source": "リプ"
   },
   {
@@ -4011,7 +4011,7 @@
    "source": "DM"
   },
   {
-   "id": 403,
+   "id": 487,
    "user": "DM",
    "display_name": "匿名",
    "song_id": "YT:g1B212tGl_Y",
@@ -4062,8 +4062,8 @@
   },
   {
    "id": 408,
-   "user": "DM",
-   "display_name": "匿名",
+   "user": "WatakusiHikamer",
+   "display_name": "✨ﾜﾀｸｼ✨",
    "song_id": "YT:p62b76pmbC0",
    "title": "【音MAD】海 月 卵",
    "duration_sec": 211.0,
@@ -4072,8 +4072,8 @@
   },
   {
    "id": 409,
-   "user": "DM",
-   "display_name": "匿名",
+   "user": "WatakusiHikamer",
+   "display_name": "✨ﾜﾀｸｼ✨",
    "song_id": "NICO:sm42362806",
    "title": "もしも今日が人生最後の日ならば　悔いの無い人生過ごしたと言えますか？ｗ",
    "duration_sec": 142.0,
@@ -4841,7 +4841,7 @@
    "source": "DM"
   },
   {
-   "id": 487,
+   "id": 489,
    "user": "sekisei_mania",
    "display_name": "ぽんちキン",
    "song_id": "YT:_caJHVf0F2g",
@@ -4859,8 +4859,198 @@
    "duration_sec": 83.0,
    "url": "https://www.nicovideo.jp/watch/sm46231464",
    "source": "リプ"
+  },
+  {
+   "id": 490,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "URL:sakusaku.wav",
+   "title": "処女作のゴミ",
+   "duration_sec": 90.8,
+   "url": "sakusaku.wav",
+   "source": "DM"
+  },
+  {
+   "id": 491,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:ZGIupJzaE2w",
+   "title": "＊～アスタリスク～",
+   "duration_sec": 256.0,
+   "url": "https://www.youtube.com/watch?v=ZGIupJzaE2w",
+   "source": "DM"
+  },
+  {
+   "id": 492,
+   "user": "daimanifan",
+   "display_name": "カギマニ@荒ハト応援隊",
+   "song_id": "YT:fxVoBMBxdVk",
+   "title": "流星-倉橋ヨエコ (Ryusei)",
+   "duration_sec": 218.0,
+   "url": "https://www.youtube.com/watch?v=fxVoBMBxdVk",
+   "source": "リプ"
+  },
+  {
+   "id": 493,
+   "user": "hijousyokumania",
+   "display_name": "HIKAVERSE",
+   "song_id": "YT:J120uD-rcnQ",
+   "title": "バイバイハロー @ フリーBGM DOVA-SYNDROME OFFICIAL YouTube CHANNEL",
+   "duration_sec": 155.0,
+   "url": "https://www.youtube.com/watch?v=J120uD-rcnQ",
+   "source": "リプ"
+  },
+  {
+   "id": 494,
+   "user": "aho_Chihuahua",
+   "display_name": "ちわっさん",
+   "song_id": "YT:zB45CeI9eyk",
+   "title": "【ONICHA】APT.  feat.HIKAKIN 【鬼茶リミックス】",
+   "duration_sec": 239.0,
+   "url": "https://www.youtube.com/watch?v=zB45CeI9eyk",
+   "source": "リプ"
+  },
+  {
+   "id": 495,
+   "user": "KBOw4m9",
+   "display_name": "東南_mania",
+   "song_id": "YT:SR7aiPTvmm0",
+   "title": "싸이(PSY) - 챔피언 [가사/Lyrics]",
+   "duration_sec": 189.0,
+   "url": "https://www.youtube.com/watch?v=SR7aiPTvmm0",
+   "source": "リプ"
+  },
+  {
+   "id": 497,
+   "user": "DM",
+   "display_name": "匿名",
+   "song_id": "YT:lMkso1T6BM0",
+   "title": "サライ",
+   "duration_sec": 386.0,
+   "url": "https://www.youtube.com/watch?v=lMkso1T6BM0",
+   "source": "DM"
+  },
+  {
+   "id": 498,
+   "title": "僕たちはアルイダ #ヒカマー#ヒカマーズアルカイダ",
+   "display_name": "ヒカマーのツイート代行bot@完全匿名",
+   "user": "hikamer_tor",
+   "duration_sec": 58,
+   "url": "https://www.youtube.com/watch?v=X1CzSHclzO8",
+   "source": "リプ",
+   "song_id": "YT:X1CzSHclzO8"
+  },
+  {
+   "id": 499,
+   "title": "Nightcore - How To Be A Heartbreaker",
+   "display_name": "ヅィユマニ",
+   "user": "duliyu_",
+   "duration_sec": 189,
+   "url": "https://www.youtube.com/watch?v=O6NvsM49N6w",
+   "source": "リプ",
+   "song_id": "YT:O6NvsM49N6w"
+  },
+  {
+   "id": 500,
+   "title": "P-Model - 2D or not 2D",
+   "display_name": "ゆくエス @秋例行こうかな？",
+   "user": "2EkoFtSjJM71808",
+   "duration_sec": 200,
+   "url": "https://www.youtube.com/watch?v=aj13Y_H6lDo",
+   "source": "リプ",
+   "song_id": "YT:aj13Y_H6lDo"
+  },
+  {
+   "id": 501,
+   "title": "P-MODEL - LICORICE LEAF (Live)",
+   "display_name": "ゆくエス @秋例行こうかな？",
+   "user": "2EkoFtSjJM71808",
+   "duration_sec": 263,
+   "url": "https://www.youtube.com/watch?v=FbAL0xlrspU",
+   "source": "リプ",
+   "song_id": "YT:FbAL0xlrspU"
+  },
+  {
+   "id": 502,
+   "title": "アナ、ude Buster",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 76,
+   "url": "https://www.youtube.com/watch?v=VT_nFeFH8mI",
+   "source": "DM",
+   "song_id": "YT:VT_nFeFH8mI"
+  },
+  {
+   "id": 503,
+   "title": "Dr.満己",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 76,
+   "url": "https://www.nicovideo.jp/watch/sm35849200",
+   "source": "DM",
+   "song_id": "NICO:sm35849200"
+  },
+  {
+   "id": 504,
+   "title": "Meant To Be",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 160,
+   "url": "https://www.youtube.com/watch?v=TBrR-xL7lks",
+   "source": "DM",
+   "song_id": "YT:TBrR-xL7lks"
+  },
+  {
+   "id": 505,
+   "title": "RHYMESTER - B-BOYイスム",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 176,
+   "url": "https://www.youtube.com/watch?v=y5kq1WnAQpg",
+   "source": "DM",
+   "song_id": "YT:y5kq1WnAQpg"
+  },
+  {
+   "id": 506,
+   "title": "NITRO MICROPHONE UNDERGROUND (Official Music Video) Produced by DJ WATARAI",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 348,
+   "url": "https://www.youtube.com/watch?v=CLxWD210f5Q",
+   "source": "DM",
+   "song_id": "YT:CLxWD210f5Q"
+  },
+  {
+   "id": 507,
+   "title": "葛飾ラプソディー",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 169,
+   "url": "https://www.youtube.com/watch?v=yEVEKekvbFo",
+   "source": "DM",
+   "song_id": "YT:yEVEKekvbFo"
+  },
+  {
+   "id": 508,
+   "title": "『見る前に概要欄』緊急地震速報vsヒカキン ボイパ対決 Bad Apple!!",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 133,
+   "url": "https://www.youtube.com/watch?v=VTi9eixEWXk",
+   "source": "DM",
+   "song_id": "YT:VTi9eixEWXk"
+  },
+  {
+   "id": 509,
+   "title": "【拾い動画】(MAD) RED ZONE 「NHK ZONE」",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 145,
+   "url": "https://www.youtube.com/watch?v=NOpQGhRM3oc",
+   "source": "DM",
+   "song_id": "YT:NOpQGhRM3oc"
   }
  ],
- "total_songs": 485,
- "total_sec": 95861.9
+ "total_songs": 492,
+ "total_sec": 97422.7
 }
