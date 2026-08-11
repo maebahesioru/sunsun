@@ -62,8 +62,7 @@ export default function DownloadPage() {
               </div>
             </div>
             <a
-              href={`/downloads/${f.file}`}
-              download={f.title.includes("m4a") ? undefined : "tweets.csv"}
+              href={`/api/download?file=${f.file}`}
               className="shrink-0 rounded-xl bg-amber-500 px-4 py-2 text-xs font-bold text-zinc-950 transition hover:bg-amber-400"
             >
               ⬇ ダウンロード
