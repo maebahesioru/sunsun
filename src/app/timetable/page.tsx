@@ -1,10 +1,17 @@
 import { existsSync, readFileSync, statSync } from "fs";
 import path from "path";
+import type { Metadata } from "next";
 import NowPlaying, { type ScheduleItem } from "@/components/NowPlaying";
 import SongList, { type SongListItem } from "@/components/SongList";
 import StatsCards from "@/components/StatsCards";
 
 export const dynamic = "force-dynamic";
+
+export const metadata: Metadata = {
+  title: "番組表",
+  description:
+    "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャルの全曲番組表。リクエスト曲の放送予定時刻・リクエスト者・再生順を確認できます。",
+};
 
 type Song = {
   id: number;
@@ -168,7 +175,28 @@ export default function TimetablePage() {
   }));
 
   return (
-    <main id="timetable-top" className="mx-auto max-w-5xl px-4 py-10">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "MusicPlaylist",
+            name: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル 番組表",
+            numTracks: order.length,
+            track: order.map((s) => ({
+              "@type": "MusicRecording",
+              name: s.title,
+              byArtist: {
+                "@type": "Person",
+                name: s.source === "DM" && s.display_name === "匿名" ? "匿名" : s.display_name || s.user,
+              },
+              duration: `PT${Math.round(s.duration_sec || 0)}S`,
+            })),
+          }),
+        }}
+      />
+      <main id="timetable-top" className="mx-auto max-w-5xl px-4 py-10">
       <NowPlaying schedule={schedule} />
       <div className="text-center">
         <p className="text-xs font-semibold tracking-widest text-amber-400">完全ランダム再生順</p>
@@ -211,6 +239,7 @@ export default function TimetablePage() {
       <p className="mt-8 text-center text-xs leading-relaxed text-zinc-600">
         この順番が実際に放送で流れる再生順です。放送時、運営の都合により曲が飛ばされる場合があります。
       </p>
-    </main>
+      </main>
+    </>
   );
 }
