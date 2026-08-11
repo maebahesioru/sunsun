@@ -78,6 +78,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: siteUrl,
+    languages: {
+      ja: siteUrl,
+      "ja-JP": siteUrl,
+    },
   },
   formatDetection: {
     email: false,
@@ -118,6 +122,19 @@ export default function RootLayout({
               },
               image: `${siteUrl}/og.png`,
               url: siteUrl,
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "マニアスプレッダーのサンサンサンデー2026",
+              alternateName: "サンサンサンデー2026 野獣の日スペシャル",
+              url: siteUrl,
+              inLanguage: "ja",
             }),
           }}
         />

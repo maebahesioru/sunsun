@@ -196,6 +196,29 @@ export default function TimetablePage() {
           }),
         }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: "ホーム",
+                item: "https://sunsunsunday.hikamer.f5.si",
+              },
+              {
+                "@type": "ListItem",
+                position: 2,
+                name: "番組表",
+                item: "https://sunsunsunday.hikamer.f5.si/timetable",
+              },
+            ],
+          }),
+        }}
+      />
       <main id="timetable-top" className="mx-auto max-w-5xl px-4 py-10">
       <NowPlaying schedule={schedule} />
       <div className="text-center">
