@@ -11,6 +11,11 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+# git HEAD のデータ（playlist.csv / songs.json）を物理的に除外。
+# 本番データはデプロイ後に SSH+docker cp で注入する（デプロイで古いデータに戻らないため）。
+RUN rm -rf public/data && mkdir -p public/data \
+  && echo '{"songs":[],"total_sec":0,"total_songs":0,"updated_at":""}' > public/data/songs.json \
+  && printf '\xef\xbb\xbf再生順,曲名,表示名,ユーザーID,時間(秒),URL,ソース\n' > public/data/playlist.csv
 RUN corepack enable && pnpm build
 
 FROM base AS runner
