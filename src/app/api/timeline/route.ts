@@ -11,7 +11,8 @@ export async function GET() {
   return new NextResponse(data, {
     headers: {
       "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "no-cache, no-store",
+      // データは固定なので1日キャッシュ（ブラウザ+CDN）
+      "Cache-Control": "public, max-age=86400, s-maxage=86400",
     },
   });
 }
