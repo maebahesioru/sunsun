@@ -37,7 +37,7 @@ export default function ListenPage() {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    fetch("/data/timeline.json")
+    fetch("/api/timeline")
       .then((r) => r.json())
       .then((d) => setTweets(d))
       .catch(() => {});
