@@ -44,10 +44,11 @@ export default function ListenPage() {
   }, []);
 
   const realTime = BASE + OFFSETS[part] + pos;
+  // 再生位置まで（+未来5分）のツイートを累積表示 → 再生が進むと溜まっていく
   const visible = useMemo(
     () =>
       tweets
-        .filter((t) => Math.abs(t.t - realTime) <= 300)
+        .filter((t) => t.t <= realTime + 300)
         .sort((a, b) => a.t - b.t),
     [tweets, realTime],
   );
@@ -94,6 +95,7 @@ export default function ListenPage() {
           preload="metadata"
           src={`/api/download?file=${PARTS[part].id}.m4a&play=1`}
           onTimeUpdate={(e) => setPos(e.currentTarget.currentTime)}
+          onSeeked={(e) => setPos(e.currentTarget.currentTime)}
           className="w-full"
         />
         <div className="mt-2 text-xs text-zinc-500">
@@ -101,7 +103,7 @@ export default function ListenPage() {
           <span className="font-bold text-amber-400">
             {fmt(realTime)}
           </span>
-          （前後5分のツイート {visible.length} 件表示中）
+          （ここまでのツイート {visible.length} 件）
         </div>
       </div>
 
