@@ -32,7 +32,7 @@ const FILES = [
     desc: "Part4（エンディング）",
   },
   {
-    file: "tweets.csv",
+    file: "sunsun.csv",
     title: "ツイートデータ（#マニアスプレッダーのサンサンサンデー）",
     size: "11MB",
     desc: "ハッシュタグツイート7,726件のCSV",
