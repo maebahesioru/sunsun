@@ -34,6 +34,13 @@ type Tweet = {
   ps: boolean;
 };
 
+type Song = {
+  n: number;
+  title: string;
+  dur: number;
+  start: number;
+};
+
 function fmt(ts: number) {
   // JST固定表示（UTCメソッド+9h）→ SSR/クライアントのHydration不一致を防止
   const d = new Date((ts + 9 * 3600) * 1000);
@@ -86,6 +93,7 @@ export default function ListenPage() {
   const [part, setPart] = useState(0);
   const [pos, setPos] = useState(0);
   const [tweets, setTweets] = useState<Tweet[]>([]);
+  const [songlist, setSonglist] = useState<Song[]>([]);
   const [query, setQuery] = useState("");
   const audioRef = useRef<HTMLAudioElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -94,6 +102,10 @@ export default function ListenPage() {
     fetch("/api/timeline")
       .then((r) => r.json())
       .then((d) => setTweets(d))
+      .catch(() => {});
+    fetch("/api/songlist")
+      .then((r) => r.json())
+      .then((d) => setSonglist(d))
       .catch(() => {});
   }, []);
 
@@ -117,6 +129,16 @@ export default function ListenPage() {
   };
 
   const realTime = BASE + OFFSETS[part] + pos;
+
+  // 現在流れてる曲を特定（開始時刻が再生位置以前の最新曲）
+  const currentSong = useMemo(() => {
+    let cur: Song | null = null;
+    for (const s of songlist) {
+      if (s.start <= realTime) cur = s;
+      else break;
+    }
+    return cur;
+  }, [songlist, realTime]);
 
   // 再生位置まで（+未来5分）のツイートを累積表示
   const visible = useMemo(
@@ -217,6 +239,54 @@ export default function ListenPage() {
           <span className="font-bold text-amber-400">{fmt(realTime)}</span>
           （ここまでのツイート {visible.length} 件）
         </div>
+      </div>
+
+      {/* 現在の曲 + 曲目次 */}
+      <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-zinc-500">🎵 現在の曲:</span>
+          {currentSong ? (
+            <span className="font-bold text-amber-400">
+              {currentSong.n}曲目 {currentSong.title}
+              <span className="ml-2 text-xs font-normal text-zinc-500">
+                {fmt(currentSong.start)}〜
+              </span>
+            </span>
+          ) : (
+            <span className="text-zinc-600">（放送停止中・曲なし）</span>
+          )}
+        </div>
+        <details className="mt-3">
+          <summary className="cursor-pointer text-xs font-bold text-zinc-400 transition hover:text-amber-400">
+            📋 曲目次（{songlist.length}曲）クリックでその曲にジャンプ
+          </summary>
+          <div className="mt-2 max-h-64 overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-950/60 p-2">
+            {songlist.length === 0 && (
+              <div className="py-6 text-center text-xs text-zinc-600">
+                読み込み中…
+              </div>
+            )}
+            {songlist.map((s) => (
+              <div
+                key={s.n}
+                onClick={() => jumpTo(s.start)}
+                className={`flex cursor-pointer items-center gap-2 rounded-lg px-3 py-1.5 text-xs transition hover:bg-zinc-800 ${
+                  currentSong?.n === s.n
+                    ? "bg-amber-500/20 font-bold text-amber-400"
+                    : "text-zinc-400"
+                }`}
+              >
+                <span className="w-8 shrink-0 font-mono text-zinc-600">
+                  {s.n}
+                </span>
+                <span className="min-w-0 flex-1 truncate">{s.title}</span>
+                <span className="shrink-0 font-mono text-zinc-600">
+                  {fmt(s.start)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </details>
       </div>
 
       {/* 検索 */}
