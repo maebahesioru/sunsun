@@ -43,6 +43,25 @@ export default function ListenPage() {
       .catch(() => {});
   }, []);
 
+  // URLパラメータ ?part=N で初期パート指定（N: 1-4）
+  useEffect(() => {
+    const p = parseInt(
+      new URLSearchParams(window.location.search).get("part") || "1",
+      10,
+    );
+    if (p >= 1 && p <= 4 && p - 1 !== part) setPart(p - 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const changePart = (i: number) => {
+    setPart(i);
+    setPos(0);
+    if (audioRef.current) audioRef.current.currentTime = 0;
+    const url = new URL(window.location.href);
+    url.searchParams.set("part", String(i + 1));
+    window.history.replaceState(null, "", url.toString());
+  };
+
   const realTime = BASE + OFFSETS[part] + pos;
   // 再生位置まで（+未来5分）のツイートを累積表示 → 再生が進むと溜まっていく
   const visible = useMemo(
@@ -71,11 +90,7 @@ export default function ListenPage() {
         {PARTS.map((p, i) => (
           <button
             key={p.id}
-            onClick={() => {
-              setPart(i);
-              setPos(0);
-              if (audioRef.current) audioRef.current.currentTime = 0;
-            }}
+            onClick={() => changePart(i)}
             className={`rounded-xl px-4 py-2 text-xs font-bold transition ${
               part === i
                 ? "bg-amber-500 text-zinc-950"
