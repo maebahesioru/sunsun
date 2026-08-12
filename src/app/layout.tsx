@@ -147,15 +147,27 @@ export default function RootLayout({
                 <span className="ml-1 hidden text-xs text-zinc-400 sm:inline">野獣の日スペシャル</span>
               </span>
             </Link>
-            <nav className="flex items-center gap-4 text-sm">
+            <nav className="flex items-center gap-2 text-sm sm:gap-4">
               <Link href="/" className="text-zinc-300 transition hover:text-amber-400">
                 説明
               </Link>
               <Link
                 href="/timetable"
-                className="rounded-full bg-amber-500 px-4 py-1.5 font-semibold text-zinc-950 transition hover:bg-amber-400"
+                className="text-zinc-300 transition hover:text-amber-400"
               >
                 番組表
+              </Link>
+              <Link
+                href="/download"
+                className="text-zinc-300 transition hover:text-amber-400"
+              >
+                ダウンロード
+              </Link>
+              <Link
+                href="/listen"
+                className="rounded-full bg-amber-500 px-4 py-1.5 font-semibold text-zinc-950 transition hover:bg-amber-400"
+              >
+                ライブ再生
               </Link>
             </nav>
           </div>

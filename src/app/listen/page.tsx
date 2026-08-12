@@ -169,6 +169,20 @@ export default function ListenPage() {
       <p className="mt-2 text-sm text-zinc-400">
         放送録音を再生すると、その同時刻に投稿されたツイートが流れてきます。
       </p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <a
+          href="/download"
+          className="rounded-xl bg-amber-500 px-4 py-2 text-xs font-bold text-zinc-950 transition hover:bg-amber-400"
+        >
+          ⬇ ダウンロードはこちら
+        </a>
+        <a
+          href="/timetable"
+          className="rounded-xl border border-zinc-700 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60"
+        >
+          番組表
+        </a>
+      </div>
 
       {/* パート選択 */}
       <div className="mt-6 flex flex-wrap gap-2">

@@ -106,10 +106,22 @@ export default function Home() {
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
-            href="/timetable"
+            href="/listen?part=1"
             className="rounded-full bg-amber-500 px-6 py-2.5 font-bold text-zinc-950 transition hover:bg-amber-400"
           >
+            🎧 ライブ再生
+          </Link>
+          <Link
+            href="/timetable"
+            className="rounded-full border border-zinc-700 px-6 py-2.5 font-semibold text-zinc-200 transition hover:border-amber-500 hover:text-amber-400"
+          >
             🎵 番組表を見る
+          </Link>
+          <Link
+            href="/download"
+            className="rounded-full border border-zinc-700 px-6 py-2.5 font-semibold text-zinc-200 transition hover:border-amber-500 hover:text-amber-400"
+          >
+            ⬇ ダウンロード
           </Link>
           <a
             href="https://x.com/maebahesioru2"

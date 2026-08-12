@@ -46,6 +46,20 @@ export default function DownloadPage() {
       <p className="mt-2 text-sm text-zinc-400">
         サンサンサンデー2026の放送録音とツイートデータのアーカイブです。いつでも聞き直せます。
       </p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <a
+          href="/listen?part=1"
+          className="rounded-xl bg-amber-500 px-4 py-2 text-xs font-bold text-zinc-950 transition hover:bg-amber-400"
+        >
+          ▶ ライブ再生はこちら
+        </a>
+        <a
+          href="/timetable"
+          className="rounded-xl border border-zinc-700 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60"
+        >
+          番組表
+        </a>
+      </div>
 
       <div className="mt-8 space-y-3">
         {FILES.map((f) => (
