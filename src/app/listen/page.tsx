@@ -18,6 +18,11 @@ type Tweet = {
   tx: string;
   lk: number;
   rt: number;
+  img: string;
+  mt: string;
+  md: string;
+  qn: string;
+  qt: string;
 };
 
 function fmt(ts: number) {
@@ -33,6 +38,7 @@ export default function ListenPage() {
   const [part, setPart] = useState(0);
   const [pos, setPos] = useState(0);
   const [tweets, setTweets] = useState<Tweet[]>([]);
+  const [query, setQuery] = useState("");
   const audioRef = useRef<HTMLAudioElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -63,7 +69,8 @@ export default function ListenPage() {
   };
 
   const realTime = BASE + OFFSETS[part] + pos;
-  // 再生位置まで（+未来5分）のツイートを累積表示 → 再生が進むと溜まっていく
+
+  // 再生位置まで（+未来5分）のツイートを累積表示
   const visible = useMemo(
     () =>
       tweets
@@ -72,11 +79,41 @@ export default function ListenPage() {
     [tweets, realTime],
   );
 
+  // 検索（入力中は全ツイートから）
+  const filtered = useMemo(() => {
+    if (!query.trim()) return visible;
+    const q = query.trim().toLowerCase();
+    return tweets
+      .filter(
+        (t) =>
+          t.tx.toLowerCase().includes(q) ||
+          t.nm.toLowerCase().includes(q) ||
+          t.sn.toLowerCase().includes(q) ||
+          t.qn.toLowerCase().includes(q),
+      )
+      .sort((a, b) => a.t - b.t);
+  }, [tweets, query, visible]);
+
+  // ツイートの時刻へジャンプ（該当Partを自動選択してシーク）
+  const jumpTo = (t: number) => {
+    const pi = PARTS.findIndex(
+      (p, i) => t >= BASE + OFFSETS[i] && t < BASE + OFFSETS[i] + p.dur,
+    );
+    if (pi < 0) return;
+    setPart(pi);
+    const target = t - (BASE + OFFSETS[pi]);
+    setPos(target);
+    if (audioRef.current) {
+      audioRef.current.currentTime = target;
+      audioRef.current.play().catch(() => {});
+    }
+  };
+
   // 新しいツイートが出たら下へ自動スクロール
   useEffect(() => {
     const el = scrollRef.current;
-    if (el) el.scrollTop = el.scrollHeight;
-  }, [visible.length]);
+    if (el && !query) el.scrollTop = el.scrollHeight;
+  }, [filtered.length, query]);
 
   return (
     <main className="mx-auto max-w-4xl px-4 py-10">
@@ -115,47 +152,117 @@ export default function ListenPage() {
         />
         <div className="mt-2 text-xs text-zinc-500">
           🕐 再生位置の実時刻:{" "}
-          <span className="font-bold text-amber-400">
-            {fmt(realTime)}
-          </span>
+          <span className="font-bold text-amber-400">{fmt(realTime)}</span>
           （ここまでのツイート {visible.length} 件）
         </div>
+      </div>
+
+      {/* 検索 */}
+      <div className="mt-4">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="🔍 ツイートを検索（テキスト・名前・@ID）… クリックでその時刻にジャンプ"
+          className="w-full rounded-xl border border-zinc-700 bg-zinc-900/60 px-4 py-3 text-sm text-zinc-100 placeholder-zinc-500 outline-none transition focus:border-amber-500/60"
+        />
       </div>
 
       {/* ツイートタイムライン */}
       <div className="mt-4">
         <div className="mb-2 text-xs font-bold text-zinc-500">
-          📡 同時刻のツイート
+          {query ? `🔍 検索結果 ${filtered.length} 件` : "📡 同時刻のツイート"}
         </div>
         <div
           ref={scrollRef}
-          className="h-[420px] space-y-2 overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4"
+          className="h-[480px] space-y-2 overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4"
         >
-          {visible.length === 0 ? (
+          {filtered.length === 0 ? (
             <div className="py-10 text-center text-sm text-zinc-600">
-              この時間帯のツイートはありません…
+              {query ? "検索結果がありません…" : "この時間帯のツイートはありません…"}
             </div>
           ) : (
-            visible.map((t, i) => (
+            filtered.map((t, i) => (
               <div
                 key={`${t.t}-${t.sn}-${i}`}
-                className="rounded-xl border border-zinc-800 bg-zinc-950/60 p-3"
+                onClick={() => jumpTo(t.t)}
+                className="cursor-pointer rounded-xl border border-zinc-800 bg-zinc-950/60 p-3 transition hover:border-amber-500/40"
+                title="クリックでこの時刻にジャンプ"
               >
-                <div className="flex items-center gap-2 text-[11px] text-zinc-500">
-                  <span className="font-mono">{fmt(t.t)}</span>
-                  <span className="font-bold text-zinc-300">
-                    {t.nm || t.sn}
-                  </span>
-                  <span className="text-zinc-600">@{t.sn}</span>
-                  {(t.lk > 0 || t.rt > 0) && (
-                    <span className="ml-auto text-zinc-600">
-                      ♥ {t.lk}・RT {t.rt}
-                    </span>
+                <div className="flex items-start gap-2">
+                  {t.img && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={t.img}
+                      alt=""
+                      className="mt-0.5 h-8 w-8 shrink-0 rounded-full bg-zinc-800"
+                    />
                   )}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 text-[11px] text-zinc-500">
+                      <span className="font-bold text-zinc-300">
+                        {t.nm || t.sn}
+                      </span>
+                      <span className="text-zinc-600">@{t.sn}</span>
+                      <span className="font-mono">{fmt(t.t)}</span>
+                      {(t.lk > 0 || t.rt > 0) && (
+                        <span className="ml-auto text-zinc-600">
+                          ♥ {t.lk}・RT {t.rt}
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-1 text-sm leading-relaxed text-zinc-200">
+                      {t.tx}
+                    </p>
+
+                    {/* 引用ツイート */}
+                    {t.qn && (
+                      <div className="mt-2 rounded-lg border border-zinc-800 bg-zinc-900/60 p-2 text-xs text-zinc-400">
+                        <span className="font-bold text-zinc-500">@{t.qn}</span>
+                        : {t.qt}
+                      </div>
+                    )}
+
+                    {/* 画像 */}
+                    {t.mt === "photo" && t.md && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={t.md}
+                        alt=""
+                        loading="lazy"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(t.md, "_blank");
+                        }}
+                        className="mt-2 max-h-52 cursor-zoom-in rounded-lg border border-zinc-800"
+                      />
+                    )}
+                    {/* 動画 */}
+                    {t.mt === "video" && t.md && (
+                      <video
+                        src={t.md}
+                        controls
+                        preload="none"
+                        onClick={(e) => e.stopPropagation()}
+                        className="mt-2 max-h-52 rounded-lg border border-zinc-800"
+                      />
+                    )}
+                    {/* GIF */}
+                    {t.mt === "animated_gif" && t.md && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={t.md}
+                        alt=""
+                        loading="lazy"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(t.md, "_blank");
+                        }}
+                        className="mt-2 max-h-52 cursor-zoom-in rounded-lg border border-zinc-800"
+                      />
+                    )}
+                  </div>
                 </div>
-                <p className="mt-1 text-sm leading-relaxed text-zinc-200">
-                  {t.tx}
-                </p>
               </div>
             ))
           )}
