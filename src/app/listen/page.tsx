@@ -23,6 +23,15 @@ type Tweet = {
   md: string;
   qn: string;
   qt: string;
+  hs: string;
+  mn: string;
+  ur: string;
+  bd: string;
+  rc: number;
+  qc: number;
+  tw: string;
+  us: string;
+  ps: boolean;
 };
 
 function fmt(ts: number) {
@@ -202,18 +211,78 @@ export default function ListenPage() {
                     <div className="flex items-center gap-2 text-[11px] text-zinc-500">
                       <span className="font-bold text-zinc-300">
                         {t.nm || t.sn}
+                        {t.bd && (
+                          <span
+                            className="ml-0.5 text-sky-400"
+                            title={`認証: ${t.bd}`}
+                          >
+                            ✓
+                          </span>
+                        )}
                       </span>
                       <span className="text-zinc-600">@{t.sn}</span>
                       <span className="font-mono">{fmt(t.t)}</span>
-                      {(t.lk > 0 || t.rt > 0) && (
+                      {(t.lk > 0 || t.rt > 0 || t.rc > 0 || t.qc > 0) && (
                         <span className="ml-auto text-zinc-600">
-                          ♥ {t.lk}・RT {t.rt}
+                          {t.lk > 0 && <>♥ {t.lk} </>}
+                          {t.rt > 0 && <>RT {t.rt} </>}
+                          {t.rc > 0 && <>↪ {t.rc} </>}
+                          {t.qc > 0 && <>❝ {t.qc}</>}
                         </span>
                       )}
                     </div>
                     <p className="mt-1 text-sm leading-relaxed text-zinc-200">
                       {t.tx}
                     </p>
+
+                    {/* ハッシュタグ・メンション・リンク */}
+                    {(t.hs || t.mn || t.ur) && (
+                      <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px]">
+                        {t.hs
+                          .split(",")
+                          .map((h) => h.trim())
+                          .filter(Boolean)
+                          .slice(0, 4)
+                          .map((h) => (
+                            <span key={h} className="text-sky-400">
+                              #{h}
+                            </span>
+                          ))}
+                        {t.mn
+                          .split(",")
+                          .map((m) => m.trim())
+                          .filter(Boolean)
+                          .slice(0, 2)
+                          .map((m) => (
+                            <span key={m} className="text-zinc-500">
+                              @{m}
+                            </span>
+                          ))}
+                        {t.ur && (
+                          <a
+                            href={t.ur}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-amber-400 underline"
+                          >
+                            🔗 リンク
+                          </a>
+                        )}
+                        {t.tw && (
+                          <a
+                            href={t.tw}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="ml-auto text-zinc-600 hover:text-sky-400"
+                            title="Xで開く"
+                          >
+                            ↗ X
+                          </a>
+                        )}
+                      </div>
+                    )}
 
                     {/* 引用ツイート */}
                     {t.qn && (
@@ -234,7 +303,9 @@ export default function ListenPage() {
                           e.stopPropagation();
                           window.open(t.md, "_blank");
                         }}
-                        className="mt-2 max-h-52 cursor-zoom-in rounded-lg border border-zinc-800"
+                        className={`mt-2 max-h-52 cursor-zoom-in rounded-lg border border-zinc-800 ${
+                          t.ps ? "blur-md" : ""
+                        }`}
                       />
                     )}
                     {/* 動画 */}
