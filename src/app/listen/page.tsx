@@ -35,12 +35,51 @@ type Tweet = {
 };
 
 function fmt(ts: number) {
-  const d = new Date(ts * 1000);
-  return `${String(d.getMonth() + 1).padStart(2, "0")}/${String(
-    d.getDate(),
-  ).padStart(2, "0")} ${String(d.getHours()).padStart(2, "0")}:${String(
-    d.getMinutes(),
+  // JST固定表示（UTCメソッド+9h）→ SSR/クライアントのHydration不一致を防止
+  const d = new Date((ts + 9 * 3600) * 1000);
+  return `${String(d.getUTCMonth() + 1).padStart(2, "0")}/${String(
+    d.getUTCDate(),
+  ).padStart(2, "0")} ${String(d.getUTCHours()).padStart(2, "0")}:${String(
+    d.getUTCMinutes(),
   ).padStart(2, "0")}`;
+}
+
+// HLS（.m3u8）動画プレイヤー（video.twimg.com の動画はHLSなのでhls.jsで再生）
+function VideoPlayer({ src }: { src: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let hls: { destroy: () => void } | null = null;
+    if (src.endsWith(".m3u8")) {
+      import("hls.js")
+        .then(({ default: Hls }) => {
+          if (Hls.isSupported() && ref.current) {
+            hls = new Hls();
+            hls.loadSource(src);
+            hls.attachMedia(ref.current);
+          }
+        })
+        .catch(() => {
+          if (ref.current) ref.current.src = src;
+        });
+    } else {
+      el.src = src;
+    }
+    return () => {
+      if (hls) hls.destroy();
+    };
+  }, [src]);
+  return (
+    <video
+      ref={ref}
+      controls
+      preload="none"
+      playsInline
+      onClick={(e) => e.stopPropagation()}
+      className="mt-2 max-h-52 rounded-lg border border-zinc-800"
+    />
+  );
 }
 
 export default function ListenPage() {
@@ -308,16 +347,8 @@ export default function ListenPage() {
                         }`}
                       />
                     )}
-                    {/* 動画 */}
-                    {t.mt === "video" && t.md && (
-                      <video
-                        src={t.md}
-                        controls
-                        preload="none"
-                        onClick={(e) => e.stopPropagation()}
-                        className="mt-2 max-h-52 rounded-lg border border-zinc-800"
-                      />
-                    )}
+                    {/* 動画（HLS対応） */}
+                    {t.mt === "video" && t.md && <VideoPlayer src={t.md} />}
                     {/* GIF */}
                     {t.mt === "animated_gif" && t.md && (
                       // eslint-disable-next-line @next/next/no-img-element
