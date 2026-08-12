@@ -50,7 +50,7 @@ function VideoPlayer({ src }: { src: string }) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    let hls: { destroy: () => void } | null = null;
+    let hls: any = null;
     if (src.endsWith(".m3u8")) {
       import("hls.js")
         .then(({ default: Hls }) => {
