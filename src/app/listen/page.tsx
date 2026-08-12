@@ -238,14 +238,21 @@ export default function ListenPage() {
                 title="クリックでこの時刻にジャンプ"
               >
                 <div className="flex items-start gap-2">
-                  {t.img && (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={t.img}
-                      alt=""
-                      className="mt-0.5 h-8 w-8 shrink-0 rounded-full bg-zinc-800"
-                    />
-                  )}
+                  <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-xs font-bold text-zinc-400">
+                    {(t.nm || t.sn).charAt(0)}
+                    {t.img && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={t.img}
+                        alt=""
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display =
+                            "none";
+                        }}
+                        className="absolute inset-0 h-8 w-8 rounded-full bg-zinc-800"
+                      />
+                    )}
+                  </div>
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 text-[11px] text-zinc-500">
                       <span className="font-bold text-zinc-300">
@@ -338,6 +345,10 @@ export default function ListenPage() {
                         src={t.md}
                         alt=""
                         loading="lazy"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display =
+                            "none";
+                        }}
                         onClick={(e) => {
                           e.stopPropagation();
                           window.open(t.md, "_blank");
@@ -356,6 +367,10 @@ export default function ListenPage() {
                         src={t.md}
                         alt=""
                         loading="lazy"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display =
+                            "none";
+                        }}
                         onClick={(e) => {
                           e.stopPropagation();
                           window.open(t.md, "_blank");
