@@ -95,6 +95,7 @@ export default function ListenPage() {
   const [tweets, setTweets] = useState<Tweet[]>([]);
   const [songlist, setSonglist] = useState<Song[]>([]);
   const [query, setQuery] = useState("");
+  const [songQuery, setSongQuery] = useState("");
   const audioRef = useRef<HTMLAudioElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -139,6 +140,16 @@ export default function ListenPage() {
     }
     return cur;
   }, [songlist, realTime]);
+
+  // 曲目次の検索絞り込み（曲名・番号）
+  const filteredSongs = useMemo(() => {
+    if (!songQuery.trim()) return songlist;
+    const q = songQuery.trim().toLowerCase();
+    return songlist.filter(
+      (s) =>
+        s.title.toLowerCase().includes(q) || String(s.n).includes(q),
+    );
+  }, [songlist, songQuery]);
 
   // 再生位置まで（+未来5分）のツイートを累積表示
   const visible = useMemo(
@@ -260,13 +271,20 @@ export default function ListenPage() {
           <summary className="cursor-pointer text-xs font-bold text-zinc-400 transition hover:text-amber-400">
             📋 曲目次（{songlist.length}曲）クリックでその曲にジャンプ
           </summary>
+          <input
+            type="text"
+            value={songQuery}
+            onChange={(e) => setSongQuery(e.target.value)}
+            placeholder="🔍 曲名・番号で検索（例: コネクト / 475）"
+            className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-200 placeholder-zinc-600 outline-none transition focus:border-amber-500"
+          />
           <div className="mt-2 max-h-64 overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-950/60 p-2">
-            {songlist.length === 0 && (
+            {filteredSongs.length === 0 && (
               <div className="py-6 text-center text-xs text-zinc-600">
-                読み込み中…
+                該当する曲がありません
               </div>
             )}
-            {songlist.map((s) => (
+            {filteredSongs.map((s) => (
               <div
                 key={s.n}
                 onClick={() => jumpTo(s.start)}
