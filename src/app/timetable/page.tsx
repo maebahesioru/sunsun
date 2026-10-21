@@ -279,8 +279,8 @@ export default function TimetablePage() {
 
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {[
-                { label: "収録曲数", value: `${data.total_songs}曲` },
-                { label: "総再生時間", value: formatTotal(data.total_sec) },
+                { label: "収録曲数", value: `${order.length}曲` },
+                { label: "総再生時間", value: formatTotal(playedSec) },
                 { label: "開始", value: formatDateTime(baseStart) },
                 { label: "終了", value: formatDateTime(endAt) },
               ].map((c) => (
@@ -306,8 +306,8 @@ export default function TimetablePage() {
         <>
           {/* 統計カード（放送開始後は実際の開始時刻に自動追従） */}
           <StatsCards
-            totalSongs={data.total_songs}
-            totalSec={data.total_sec}
+            totalSongs={decided ? order.length : data.total_songs}
+            totalSec={decided ? playedSec : data.total_sec}
             startDateMs={baseStart.getTime()}
             durations={order.map((s) => s.duration_sec || 0)}
           />
