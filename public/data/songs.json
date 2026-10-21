@@ -1361,16 +1361,6 @@
    "source": "リプ"
   },
   {
-   "id": 136,
-   "user": "TheoChan_AD392",
-   "display_name": "ثيوچان",
-   "song_id": "YT:cro5qYApXFs",
-   "title": "Yuriko Koike anthem",
-   "duration_sec": 174.0,
-   "url": "https://www.youtube.com/watch?v=cro5qYApXFs",
-   "source": "リプ"
-  },
-  {
    "id": 137,
    "user": "TsukemersAtochi",
    "display_name": "目黒",
@@ -5049,6 +5039,116 @@
    "url": "https://www.youtube.com/watch?v=NOpQGhRM3oc",
    "source": "DM",
    "song_id": "YT:NOpQGhRM3oc"
+  },
+  {
+   "id": 510,
+   "title": "【高市早苗 逆応援ソング】逃げて参りますMV 2026年衆院解散総選挙",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 140,
+   "url": "https://www.youtube.com/watch?v=UlLF-24gs2k",
+   "source": "DM",
+   "song_id": "YT:UlLF-24gs2k"
+  },
+  {
+   "id": 511,
+   "title": "【転載】タイトル不明 成田博幸mad 金星のダンス",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 23,
+   "url": "https://www.youtube.com/watch?v=DroYlZxyg6c",
+   "source": "DM",
+   "song_id": "YT:DroYlZxyg6c"
+  },
+  {
+   "id": 512,
+   "title": "政府の陰謀が消えたから個人的にup",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 23,
+   "url": "https://www.youtube.com/watch?v=cf5OVnQbLW0",
+   "source": "DM",
+   "song_id": "YT:cf5OVnQbLW0"
+  },
+  {
+   "id": 513,
+   "title": "うおw冷笑の歌",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 72,
+   "url": "https://www.youtube.com/watch?v=OC-KBXunrtk",
+   "source": "DM",
+   "song_id": "YT:OC-KBXunrtk"
+  },
+  {
+   "id": 514,
+   "title": "えっぐwwwwwww　リクエストはフォロワー優先　#冷笑 #音ハメ",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 14,
+   "url": "https://www.youtube.com/shorts/EjTAS36TQXg",
+   "source": "DM",
+   "song_id": "YT:EjTAS36TQXg"
+  },
+  {
+   "id": 515,
+   "title": "朝の光の中で将軍（hikakin_mania）",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 103,
+   "url": "https://www.youtube.com/watch?v=e8X22oavvkQ",
+   "source": "DM",
+   "song_id": "YT:e8X22oavvkQ"
+  },
+  {
+   "id": 516,
+   "title": "いえない / 十字架_mania",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 18,
+   "url": "https://youtu.be/gIS7zz8iszk",
+   "source": "DM",
+   "song_id": "YT:gIS7zz8iszk"
+  },
+  {
+   "id": 517,
+   "title": "Yuriko Koike anthem",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 174,
+   "url": "https://youtu.be/cro5qYApXFs",
+   "source": "DM",
+   "song_id": "YT:cro5qYApXFs"
+  },
+  {
+   "id": 518,
+   "title": "【ヒカマニ音MAD】_",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 76,
+   "url": "https://www.youtube.com/watch?v=kEcp9tNUKSM",
+   "source": "DM",
+   "song_id": "YT:kEcp9tNUKSM"
+  },
+  {
+   "id": 519,
+   "title": "【ヒカマニ×界隈曲】Re:模倣曲の作り方が一瞬で分かる音MAD",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 106,
+   "url": "https://www.youtube.com/watch?v=HknWpLBMFf8",
+   "source": "DM",
+   "song_id": "YT:HknWpLBMFf8"
+  },
+  {
+   "id": 520,
+   "title": "ヒカマーズ・デリュージョン",
+   "display_name": "十字架_mania",
+   "user": "十字架_mania",
+   "duration_sec": 99,
+   "url": "https://www.youtube.com/watch?v=iix5al-hJ1c",
+   "source": "DM",
+   "song_id": "YT:iix5al-hJ1c"
   }
  ],
  "total_songs": 492,

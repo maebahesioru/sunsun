@@ -15,19 +15,19 @@ const FILES = [
   },
   {
     file: "part2.m4a",
-    title: "…野獣の日スペシャル Part2",
+    title: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル Part2",
     size: "731MB",
     desc: "Part2",
   },
   {
     file: "part3.m4a",
-    title: "…野獣の日スペシャル Part3",
+    title: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル Part3",
     size: "171MB",
     desc: "Part3",
   },
   {
     file: "part4.m4a",
-    title: "…野獣の日スペシャル Part4",
+    title: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル Part4",
     size: "9.8MB",
     desc: "Part4（エンディング）",
   },

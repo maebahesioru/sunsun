@@ -12,12 +12,20 @@
     python _space_player.py <space_id>
 """
 import asyncio
+import ctypes
 import json
 import os
 import struct
 import subprocess
 import sys
 import time
+
+# Windowsのタイマー精度を1msに上げる（sleep(0.02)が30msになる問題の修正）
+if sys.platform == "win32":
+    try:
+        ctypes.windll.winmm.timeBeginPeriod(1)
+    except Exception:
+        pass
 import wave
 from datetime import datetime, timedelta, timezone
 from fractions import Fraction
@@ -180,7 +188,12 @@ class PlaylistTrack(AudioStreamTrack):
             await asyncio.sleep(delay)
         self._next_frame_at += 0.02
 
-        if self._frames is None or self._pos >= len(self._frames):
+        if self._frames is None or self._pos >= len(self._frames) // 2:
+            # 放送中の曲追加に対応：最新のプレイリストを再読み込み
+            try:
+                self.songs = load_playlist()
+            except Exception:
+                pass
             # 次の曲へ
             self._current += 1
             if self._current >= len(self.songs):
@@ -431,10 +444,28 @@ async def main():
     )
     print(f"[speak] publisher_id={session.publisher_id} ice={session.pc.iceConnectionState}", flush=True)
 
-    # 残り時間分（＋余裕）再生し続ける
+    # 残り時間分（＋余裕）再生し続ける（停止フラグ監視付き・残り時間は毎回再計算）
     total_sec = sum(s["duration_sec"] for s in songs[resume_idx:])
     print(f"[play] 残り再生時間 {total_sec:.0f}秒", flush=True)
-    await asyncio.sleep(total_sec + 30)
+    STOP_FLAG = os.path.join(os.path.dirname(os.path.abspath(__file__)), "stop_flag.txt")
+    elapsed = 0
+    while True:
+        if os.path.exists(STOP_FLAG):
+            print("[STOP] 停止フラグ検出・正常終了", flush=True)
+            try:
+                os.remove(STOP_FLAG)
+            except Exception:
+                pass
+            break
+        # 放送中の曲追加に対応：残り時間を毎回再計算（曲が増えたら終了も延びる）
+        try:
+            remaining = sum(s["duration_sec"] for s in load_playlist()[resume_idx:])
+        except Exception:
+            remaining = total_sec
+        if elapsed >= remaining + 30:
+            break
+        await asyncio.sleep(5)
+        elapsed += 5
 
     await session.close()
     clear_state()
