@@ -200,7 +200,7 @@ export default function ListenPage() {
     <main className="mx-auto max-w-4xl px-4 py-10">
       <h1 className="text-3xl font-black text-zinc-100">🎧 ライブ再生</h1>
       <p className="mt-2 text-sm text-zinc-400">
-        放送録音を再生すると、その同時刻に投稿されたツイートが流れてきます。
+        前回「野獣の日スペシャル」（2026年8月10日 19:00〜8月11日 22:48・全514曲）の放送録音アーカイブです。再生すると、その同時刻に投稿されたツイートが流れてきます。
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         <a

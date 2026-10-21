@@ -290,6 +290,52 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 過去のイベント（アーカイブ） */}
+      <section className="mt-10">
+        <h2 className="flex items-center gap-2 text-xl font-bold">
+          <span className="text-amber-400">📚</span> 過去のイベント（アーカイブ）
+        </h2>
+        <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6">
+          <div className="flex flex-wrap items-baseline justify-between gap-2">
+            <h3 className="text-lg font-black text-zinc-100">野獣の日スペシャル</h3>
+            <span className="font-mono text-xs text-zinc-500">
+              2026.8.10（月）19:00 → 8.11（火）22:48
+            </span>
+          </div>
+          <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+            前回開催の記録一式です。
+            <span className="font-bold text-zinc-200">全514曲・27時間48分</span>
+            の番組表（各曲の開始時刻）、放送録音のタイムシフト再生、音源とツイートデータのダウンロードをまとめて公開しています。
+          </p>
+          <div className="mt-4 grid gap-2 sm:grid-cols-3">
+            <a
+              href="/timetable"
+              className="rounded-xl border border-zinc-700 bg-zinc-950/60 px-4 py-3 transition hover:border-amber-500/60 hover:bg-zinc-900"
+            >
+              <div className="text-sm font-bold text-zinc-100">📋 番組表</div>
+              <div className="mt-0.5 text-xs text-zinc-500">514曲の再生順と開始時刻</div>
+            </a>
+            <a
+              href="/listen"
+              className="rounded-xl border border-zinc-700 bg-zinc-950/60 px-4 py-3 transition hover:border-amber-500/60 hover:bg-zinc-900"
+            >
+              <div className="text-sm font-bold text-zinc-100">🎧 ライブ再生</div>
+              <div className="mt-0.5 text-xs text-zinc-500">録音4パート＋当時のツイート</div>
+            </a>
+            <a
+              href="/download"
+              className="rounded-xl border border-zinc-700 bg-zinc-950/60 px-4 py-3 transition hover:border-amber-500/60 hover:bg-zinc-900"
+            >
+              <div className="text-sm font-bold text-zinc-100">⬇ ダウンロード</div>
+              <div className="mt-0.5 text-xs text-zinc-500">音源・ツイートデータ（約1.2GB）</div>
+            </a>
+          </div>
+          <p className="mt-3 text-xs leading-relaxed text-zinc-600">
+            ※ 今回（エロウィンSP）の番組表・録音は、放送終了後にここへ追加します。
+          </p>
+        </div>
+      </section>
+
       {/* 放送回の歴史 */}
       <section className="mt-10">
         <h2 className="flex items-center gap-2 text-xl font-bold">

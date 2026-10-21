@@ -294,6 +294,29 @@ export default function TimetablePage() {
               ))}
             </div>
 
+            <div className="mt-4 flex flex-wrap justify-center gap-2">
+              <a
+                href="/listen"
+                className="rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-300"
+              >
+                🎧 この回の録音を再生
+              </a>
+              <a
+                href="/download"
+                className="rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-300"
+              >
+                ⬇ 音源・ツイートデータ
+              </a>
+              <a
+                href="https://x.com/search?q=%23%E3%83%9E%E3%83%8B%E3%82%A2%E3%82%B9%E3%83%97%E3%83%AC%E3%83%83%E3%83%80%E3%83%BC%E3%81%AE%E3%82%B5%E3%83%B3%E3%82%B5%E3%83%B3%E3%82%B5%E3%83%B3%E3%83%87%E3%83%BC"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-300"
+              >
+                #️⃣ 当時のハッシュタグ
+              </a>
+            </div>
+
             <SongList songs={listItems} startDateMs={baseStart.getTime()} live={false} />
 
             <p className="mt-8 text-center text-xs leading-relaxed text-zinc-600">

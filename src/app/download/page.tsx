@@ -3,31 +3,31 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "ダウンロード",
   description:
-    "マニアスプレッダーのサンサンサンデー2026の放送録音・ツイートデータをダウンロードできます。いつでも聞き直せるアーカイブです。",
+    "マニアスプレッダーのサンサンサンデー2026の放送録音・ツイートデータのアーカイブです。前回「野獣の日スペシャル」（2026年8月10日開催）の全記録を、いつでも聞き直せます。",
 };
 
 const FILES = [
   {
     file: "part1.m4a",
-    title: "マニアスプレッダーのサンサンサンデー エロウィンSP",
+    title: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル（本放送 Part1）",
     size: "281MB",
     desc: "本放送 Part1",
   },
   {
     file: "part2.m4a",
-    title: "マニアスプレッダーのサンサンサンデー2026SP Part2",
+    title: "…野獣の日スペシャル Part2",
     size: "731MB",
     desc: "Part2",
   },
   {
     file: "part3.m4a",
-    title: "マニアスプレッダーのサンサンサンデー2026SP Part3",
+    title: "…野獣の日スペシャル Part3",
     size: "171MB",
     desc: "Part3",
   },
   {
     file: "part4.m4a",
-    title: "マニアスプレッダーのサンサンサンデー2026SP Part4",
+    title: "…野獣の日スペシャル Part4",
     size: "9.8MB",
     desc: "Part4（エンディング）",
   },
@@ -44,7 +44,7 @@ export default function DownloadPage() {
     <main className="mx-auto max-w-3xl px-4 py-10">
       <h1 className="text-3xl font-black text-zinc-100">ダウンロード</h1>
       <p className="mt-2 text-sm text-zinc-400">
-        サンサンサンデー2026の放送録音とツイートデータのアーカイブです。いつでも聞き直せます。
+        前回「野獣の日スペシャル」（2026年8月10日 19:00〜8月11日 22:48・全514曲）の放送録音とツイートデータのアーカイブです。今回のエロウィンSPの録音は、放送終了後にここへ追加します。
       </p>
       <div className="mt-4 flex flex-wrap gap-2">
         <a
@@ -96,7 +96,7 @@ export default function DownloadPage() {
       </div>
 
       <p className="mt-10 text-center text-xs text-zinc-600">
-        ※ 録音はすべて「マニアスプレッダーのサンサンサンデー2026」のアーカイブです。
+        ※ 録音はすべて前回「マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル」のアーカイブです。
       </p>
     </main>
   );
