@@ -129,12 +129,16 @@ export default function TimetablePage() {
   const dataDir = path.join(process.cwd(), "public", "data");
   const playlistPath = path.join(dataDir, "playlist.csv");
 
-  const eventRaw = readFileSync(path.join(dataDir, "songs.json"), "utf-8");
-  const data: EventData = JSON.parse(eventRaw);
+  let data: EventData = { event: { name: "", date: "", place: "" }, total_songs: 0, total_sec: 0, songs: [] } as unknown as EventData;
+  try {
+    data = JSON.parse(readFileSync(path.join(dataDir, "songs.json"), "utf-8")) as EventData;
+  } catch {
+    // data が未投入でも番組表ページ自体は開けるようにする（未定表示にフォールバック）
+  }
 
   // public/data の中身が前回イベント（野獣の日スペシャル）のものかどうか。
   // 今回のリクエストから番組表を作り直したら自動で「今回の番組表」表示に戻る。
-  const isPastEvent = /野獣の日/.test(data.event.name ?? "");
+  const isPastEvent = /野獣の日/.test(data?.event?.name ?? "");
   const baseStart = isPastEvent ? PAST_START : CURRENT_START;
 
   let order: Song[] = [];
@@ -272,9 +276,9 @@ export default function TimetablePage() {
           <section className="mt-16 border-t border-zinc-800 pt-10">
             <div className="text-center">
               <p className="text-xs font-semibold tracking-widest text-zinc-500">過去のイベント</p>
-              <h2 className="mt-2 text-2xl font-black sm:text-3xl">{data.event.name}</h2>
-              <p className="mt-2 text-sm text-zinc-400">{data.event.date}</p>
-              <p className="mt-1 text-xs text-zinc-500">{data.event.place}</p>
+              <h2 className="mt-2 text-2xl font-black sm:text-3xl">{data?.event?.name}</h2>
+              <p className="mt-2 text-sm text-zinc-400">{data?.event?.date}</p>
+              <p className="mt-1 text-xs text-zinc-500">{data?.event?.place}</p>
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
