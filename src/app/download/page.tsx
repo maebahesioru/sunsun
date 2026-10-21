@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const FILES = [
   {
     file: "part1.m4a",
-    title: "マニアスプレッダーのサンサンサンデー2026 野獣の日SP",
+    title: "マニアスプレッダーのサンサンサンデー エロウィンSP",
     size: "281MB",
     desc: "本放送 Part1",
   },

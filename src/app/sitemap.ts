@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 
 const siteUrl =
-  process.env.SITE_URL || "https://sunsunsunday.hikamer.f5.si";
+  process.env.SITE_URL || "https://sunsunsunday.hikamers.app";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [

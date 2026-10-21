@@ -1,5 +1,3 @@
-import fs from "fs";
-import path from "path";
 import Link from "next/link";
 
 const rules = [
@@ -46,22 +44,14 @@ const history = [
 ];
 
 export default function Home() {
-  // JSON-LD用に総再生時間を取得
-  let totalSec = 0;
-  try {
-    const songsJson = JSON.parse(
-      fs.readFileSync(path.join(process.cwd(), "public", "data", "songs.json"), "utf-8")
-    );
-    totalSec = songsJson.total_sec || 0;
-  } catch {}
-
-  const eventStart = new Date("2026-08-10T19:00:00+09:00");
-  const eventEnd = new Date(eventStart.getTime() + totalSec * 1000);
+  // 開催日時: 2026-10-31(土) 18:00 開始、翌日夜までの長丁場を想定
+  const eventStart = new Date("2026-10-31T18:00:00+09:00");
+  const eventEnd = new Date("2026-11-01T21:00:00+09:00");
 
   const eventJsonLd = {
     "@context": "https://schema.org",
     "@type": "MusicEvent",
-    name: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル",
+    name: "マニアスプレッダーのサンサンサンデー エロウィンSP",
     startDate: eventStart.toISOString(),
     endDate: eventEnd.toISOString(),
     eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
@@ -69,7 +59,7 @@ export default function Home() {
     location: {
       "@type": "VirtualLocation",
       url: "https://x.com/maebahesioru2",
-      name: "@maebahesioru2のXスペース",
+      name: "@okubahesioruのXスペース",
     },
     organizer: {
       "@type": "Person",
@@ -82,7 +72,7 @@ export default function Home() {
       url: "https://x.com/okubahesioru",
     },
     description:
-      "ヒカマー界隈の恒例イベント、音楽リクエストラジオ番組風配信。カオスな選曲とハプニング満載のオールナイトが今年も帰ってくる。",
+      "マニアスプレッダー氏の許諾を得て開催する、ヒカマー界隈の恒例イベント。音楽リクエストラジオ番組風配信で、カオスな選曲とハプニング満載のオールナイト。参加・視聴は完全無料、広告もありません。",
   };
 
   return (
@@ -93,16 +83,21 @@ export default function Home() {
       />
       {/* Hero */}
       <section className="relative overflow-hidden rounded-3xl border border-zinc-800 bg-gradient-to-b from-amber-950/40 to-zinc-950 p-8 sm:p-12">
-        <div className="absolute -right-10 -top-10 text-[10rem] opacity-10">🐗</div>
-        <p className="text-sm font-semibold tracking-widest text-amber-400">2026.8.9 野獣の日 SPECIAL</p>
+        <div className="absolute -right-10 -top-10 text-[10rem] opacity-10">🎃</div>
+        <p className="text-sm font-semibold tracking-widest text-amber-400">2026.10.31 エロウィン SP</p>
         <h1 className="mt-3 text-3xl font-black leading-tight sm:text-5xl">
           マニアスプレッダーの
           <br />
           サンサンサンデー<span className="text-amber-400">2026</span>
+          <br />
+          <span className="text-amber-400">エロウィンSP</span>
         </h1>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-300 sm:text-base">
           ヒカマー界隈の恒例イベント、音楽リクエストラジオ番組風配信。カオスな選曲とハプニング満載の
-          オールナイトが今年も帰ってくる。リクエストはXのリプ欄かDMで受付中！
+          オールナイトが今年も帰ってくる。リクエストはXのリプライ、またはGoogleフォームで受付中！
+        </p>
+        <p className="mt-3 max-w-2xl text-xs leading-relaxed text-zinc-400">
+          マニアスプレッダー氏の許諾を得て開催しています。参加・視聴は完全無料、広告はありません。
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
@@ -124,12 +119,12 @@ export default function Home() {
             ⬇ ダウンロード
           </Link>
           <a
-            href="https://x.com/maebahesioru2"
+            href="https://x.com/okubahesioru"
             target="_blank"
             rel="noopener noreferrer"
             className="rounded-full border border-zinc-700 px-6 py-2.5 font-semibold text-zinc-200 transition hover:border-amber-500 hover:text-amber-400"
           >
-            @maebahesioru2
+            @okubahesioru
           </a>
         </div>
       </section>
@@ -141,9 +136,9 @@ export default function Home() {
         </h2>
         <div className="mt-4 grid gap-4 sm:grid-cols-3">
           {[
-            { label: "開催日時", value: "2026年8月10日（月）19時ちょうど開始予定", icon: "🕖" },
-            { label: "開催場所", value: "@maebahesioru2のXスペース", icon: "📍" },
-            { label: "リクエスト受付", value: "8月3日（月）22時 〜 8月10日（月）18時半", icon: "📨" },
+            { label: "開催日時", value: "2026年10月31日（土）18時ちょうど開始予定（翌日夜まで）", icon: "🕖" },
+            { label: "開催場所", value: "@okubahesioruのXスペース", icon: "📍" },
+            { label: "リクエスト受付", value: "10月21日（水）22時 〜 10月31日（土）17時", icon: "📨" },
           ].map((item) => (
             <div key={item.label} className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5">
               <div className="text-2xl">{item.icon}</div>
@@ -154,9 +149,11 @@ export default function Home() {
         </div>
         <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900/50 p-5 text-sm leading-relaxed text-zinc-300">
           <p>
-            10日の<span className="font-bold text-zinc-100">8時から18時30分</span>までは、隼快_mania氏主催・
-            開發学習堂による<span className="font-bold text-zinc-100">「前期ヒカマー認定試験」</span>が予定されています。
-            そちらと併せての参加も可能です。
+            本イベントは<span className="font-bold text-zinc-100">マニアスプレッダー氏の許諾を得て開催</span>しています。
+            参加・視聴は<span className="font-bold text-zinc-100">完全無料</span>、広告もありません。
+          </p>
+          <p className="mt-2 text-zinc-400">
+            主催: ニコチンTV(@HikamerdesuTv) ／ 運営協力: 十字架(@maebahesioru2) ／ スペース配信: @okubahesioru
           </p>
         </div>
       </section>
@@ -203,7 +200,7 @@ export default function Home() {
               <h3 className="font-bold">リプライでリクエスト</h3>
             </div>
             <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-              受付開始時刻の22時に投稿される受付用ポストのリプライ欄に、リクエストしたい楽曲のURLを貼ってください。
+              曲募集ポストのリプライ欄に、リクエストしたい楽曲のURLを貼ってください。
               引用ポストやリポストなどで拡散していただけるとありがたいです！
             </p>
             <p className="mt-3 text-xs text-zinc-500">受付完了の合図: 主催者から「いいね」が付く</p>
@@ -211,12 +208,19 @@ export default function Home() {
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6">
             <div className="flex items-center gap-2">
               <span className="rounded-full bg-zinc-700 px-3 py-1 text-xs font-bold text-zinc-300">匿名</span>
-              <h3 className="font-bold">DMでリクエスト</h3>
+              <h3 className="font-bold">Googleフォームでリクエスト</h3>
             </div>
             <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-              匿名でリクエストしたい場合は、@maebahesioru2のDMへ楽曲のURLを送ってください。放送上でリクエスト者名は公表されません。
+              匿名でリクエストしたい場合、または鍵アカウントでリプライできない場合は、Googleフォームから送信してください。放送上でリクエスト者名は公表されません。
             </p>
-            <p className="mt-3 text-xs text-zinc-500">受付完了の合図: 主催者から「👍」が届く</p>
+            <a
+              href="https://forms.gle/GWPTiyECSvSa4ZMT9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mt-3 inline-block rounded-full bg-amber-500 px-5 py-2 text-sm font-bold text-zinc-950 transition hover:bg-amber-400"
+            >
+              フォームを開く
+            </a>
           </div>
         </div>
       </section>
@@ -280,7 +284,7 @@ export default function Home() {
             <li>• PythonおよびTwiforkを利用したスクリプトによって楽曲を再生します。</li>
             <li>• イベント運営上、スピーカーリクエストには対応しません。</li>
             <li>• 楽曲を再生するたびに、スペースのリプライ欄へ曲名、曲数カウント、リクエスト者名を投稿します。</li>
-            <li>• リクエスト者名には、Xアカウントの表示名を使用します。DMの匿名リクエストは公表しません。</li>
+            <li>• リクエスト者名には、Xアカウントの表示名を使用します。フォームからの匿名リクエストは公表しません。</li>
             <li>• スペースは録音機能をオンにして放送するため、終了後の見逃し視聴も可能です。</li>
           </ul>
         </div>
@@ -307,7 +311,7 @@ export default function Home() {
           <span className="text-amber-400">#️⃣</span> ハッシュタグ
         </h2>
         <div className="mt-4 flex flex-wrap gap-3">
-          {["#マニアスプレッダーのサンサンサンデー", "#マニアスプレッダーのサンサンサンデー2026野獣の日スペシャル"].map(
+          {["#マニアスプレッダーのサンサンサンデー", "#マニアスプレッダーのサンサンサンデー2026エロウィンSP"].map(
             (tag) => (
               <a
                 key={tag}

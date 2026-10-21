@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "番組表",
   description:
-    "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャルの全曲番組表。リクエスト曲の放送予定時刻・リクエスト者・再生順を確認できます。",
+    "マニアスプレッダーのサンサンサンデー エロウィンSPの全曲番組表。リクエスト曲の放送予定時刻・リクエスト者・再生順を確認できます。",
 };
 
 type Song = {
@@ -120,8 +120,8 @@ function formatDateTime(date: Date): string {
   return `${jst.getMonth() + 1}/${jst.getDate()}（${week}）${formatTime(date)}`;
 }
 
-// 放送開始時刻（19時ちょうど開始の場合）
-const START_DATE = new Date("2026-08-10T19:00:00+09:00");
+// 放送開始時刻（18時ちょうど開始の場合）
+const START_DATE = new Date("2026-10-31T18:00:00+09:00");
 
 export default function TimetablePage() {
   const dataDir = path.join(process.cwd(), "public", "data");
@@ -151,7 +151,7 @@ export default function TimetablePage() {
   const decided = order.length > 0;
   const playedSec = order.reduce((acc, s) => acc + (s.duration_sec || 0), 0);
 
-  // タイムテーブル: 19時ちょうど開始として各曲の開始予定時刻を計算
+  // タイムテーブル: 18時ちょうど開始として各曲の開始予定時刻を計算
   let cumulative = 0;
   const schedule: ScheduleItem[] = order.map((song, idx) => {
     const startMs = START_DATE.getTime() + cumulative * 1000;
@@ -182,7 +182,7 @@ export default function TimetablePage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "MusicPlaylist",
-            name: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル 番組表",
+            name: "マニアスプレッダーのサンサンサンデー エロウィンSP 番組表",
             numTracks: order.length,
             track: order.map((s) => ({
               "@type": "MusicRecording",
@@ -207,13 +207,13 @@ export default function TimetablePage() {
                 "@type": "ListItem",
                 position: 1,
                 name: "ホーム",
-                item: "https://sunsunsunday.hikamer.f5.si",
+                item: "https://sunsunsunday.hikamers.app",
               },
               {
                 "@type": "ListItem",
                 position: 2,
                 name: "番組表",
-                item: "https://sunsunsunday.hikamer.f5.si/timetable",
+                item: "https://sunsunsunday.hikamers.app/timetable",
               },
             ],
           }),

@@ -3,16 +3,16 @@ import Link from "next/link";
 import "./globals.css";
 
 const siteUrl =
-  process.env.SITE_URL || "https://sunsunsunday.hikamer.f5.si";
+  process.env.SITE_URL || "https://sunsunsunday.hikamers.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル",
+    default: "マニアスプレッダーのサンサンサンデー エロウィンSP",
     template: "%s | マニアスプレッダーのサンサンサンデー2026",
   },
   description:
-    "マニアスプレッダーのサンサンサンデー2026公式サイト。2026年8月10日（月）19時より@maebahesioru2のXスペースで開催。ヒカマー界隈の音MAD・VTuber楽曲・不謹慎系音声まで何でもありのオールナイト音楽リクエスト配信。",
+    "マニアスプレッダーのサンサンサンデー2026公式サイト。2026年10月31日（土）18時より@okubahesioruのXスペースで開催。ヒカマー界隈の音MAD・VTuber楽曲・不謹慎系音声まで何でもありのオールナイト音楽リクエスト配信。",
   keywords: [
     "サンサンサンデー",
     "マニアスプレッダー",
@@ -21,7 +21,8 @@ export const metadata: Metadata = {
     "音MAD",
     "Xスペース",
     "音楽リクエスト",
-    "野獣の日",
+    "ハロウィン",
+    "エロウィン",
     "maebahesioru2",
     "オールナイト",
   ],
@@ -44,9 +45,9 @@ export const metadata: Metadata = {
     locale: "ja_JP",
     url: siteUrl,
     siteName: "マニアスプレッダーのサンサンサンデー2026",
-    title: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル",
+    title: "マニアスプレッダーのサンサンサンデー エロウィンSP",
     description:
-      "2026年8月10日（月）19時より@maebahesioru2のXスペースで開催！ヒカマー界隈のオールナイト音楽リクエスト配信。",
+      "2026年10月31日（土）18時より@okubahesioruのXスペースで開催！ヒカマー界隈のオールナイト音楽リクエスト配信。",
     images: [
       {
         url: "/og.png",
@@ -60,9 +61,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@maebahesioru2",
     creator: "@maebahesioru2",
-    title: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル",
+    title: "マニアスプレッダーのサンサンサンデー エロウィンSP",
     description:
-      "2026年8月10日（月）19時より@maebahesioru2のXスペースで開催！リクエスト受付中！",
+      "2026年10月31日（土）18時より@okubahesioruのXスペースで開催！リクエスト受付中！",
     images: ["/og.png"],
   },
   robots: {
@@ -104,17 +105,18 @@ export default function RootLayout({
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "MusicEvent",
-              name: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル",
-              startDate: "2026-08-10T19:00:00+09:00",
-              endDate: "2026-08-11T23:00:00+09:00",
+              name: "マニアスプレッダーのサンサンサンデー エロウィンSP",
+              startDate: "2026-10-31T18:00:00+09:00",
+              endDate: "2026-11-01T21:00:00+09:00",
               eventAttendanceMode: "https://schema.org/OnlineEventAttendanceMode",
               eventStatus: "https://schema.org/EventScheduled",
               location: {
                 "@type": "VirtualLocation",
-                url: "https://x.com/i/spaces/1rGmqpqpjngGy",
+                url: "https://x.com/okubahesioru",
+                name: "@okubahesioruのXスペース",
               },
               description:
-                "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル。@maebahesioru2のXスペースで開催するオールナイト音楽リクエスト配信。ヒカマー界隈の音MAD・VTuber楽曲・不謹慎系音声まで何でもあり。",
+                "マニアスプレッダーのサンサンサンデー エロウィンSP。@okubahesioruのXスペースで開催するオールナイト音楽リクエスト配信。ヒカマー界隈の音MAD・VTuber楽曲・不謹慎系音声まで何でもあり。",
               organizer: {
                 "@type": "Organization",
                 name: "マニアスプレッダーのサンサンサンデー実行委員会",
@@ -132,7 +134,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "WebSite",
               name: "マニアスプレッダーのサンサンサンデー2026",
-              alternateName: "サンサンサンデー2026 野獣の日スペシャル",
+              alternateName: "サンサンサンデー エロウィンSP",
               url: siteUrl,
               inLanguage: "ja",
             }),
@@ -141,10 +143,10 @@ export default function RootLayout({
         <header className="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur">
           <div className="mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
             <Link href="/" className="flex items-center gap-2 font-bold tracking-tight">
-              <span className="text-xl">🐗</span>
+              <span className="text-xl">🎃</span>
               <span className="text-sm sm:text-base">
                 サンサンサンデー<span className="text-amber-400">2026</span>
-                <span className="ml-1 hidden text-xs text-zinc-400 sm:inline">野獣の日スペシャル</span>
+                <span className="ml-1 hidden text-xs text-zinc-400 sm:inline">エロウィンSP</span>
               </span>
             </Link>
             <nav className="flex items-center gap-2 text-sm sm:gap-4">
@@ -174,8 +176,8 @@ export default function RootLayout({
         </header>
         {children}
         <footer className="border-t border-zinc-800 py-8 text-center text-xs text-zinc-500">
-          <p>マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル</p>
-          <p className="mt-1">主催: @maebahesioru2 ／ 音楽再生: @okubahesioru</p>
+          <p>マニアスプレッダーのサンサンサンデー エロウィンSP</p>
+          <p className="mt-1">主催: ニコチンTV(@HikamerdesuTv) ／ 運営協力: 十字架(@maebahesioru2) ／ スペース配信: @okubahesioru</p>
         </footer>
       </body>
     </html>
