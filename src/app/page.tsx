@@ -101,7 +101,7 @@ export default function Home() {
         </p>
         <div className="mt-6 flex flex-wrap gap-3">
           <Link
-            href="/listen?part=1"
+            href="/listen"
             className="rounded-full bg-amber-500 px-6 py-2.5 font-bold text-zinc-950 transition hover:bg-amber-400"
           >
             🎧 ライブ再生
@@ -309,21 +309,21 @@ export default function Home() {
           </p>
           <div className="mt-4 grid gap-2 sm:grid-cols-3">
             <a
-              href="/timetable"
+              href="/archive/2026-08-10/timetable"
               className="rounded-xl border border-zinc-700 bg-zinc-950/60 px-4 py-3 transition hover:border-amber-500/60 hover:bg-zinc-900"
             >
               <div className="text-sm font-bold text-zinc-100">📋 番組表</div>
               <div className="mt-0.5 text-xs text-zinc-500">514曲の再生順と開始時刻</div>
             </a>
             <a
-              href="/listen"
+              href="/archive/2026-08-10/listen"
               className="rounded-xl border border-zinc-700 bg-zinc-950/60 px-4 py-3 transition hover:border-amber-500/60 hover:bg-zinc-900"
             >
               <div className="text-sm font-bold text-zinc-100">🎧 ライブ再生</div>
               <div className="mt-0.5 text-xs text-zinc-500">録音4パート＋当時のツイート</div>
             </a>
             <a
-              href="/download"
+              href="/archive/2026-08-10/download"
               className="rounded-xl border border-zinc-700 bg-zinc-950/60 px-4 py-3 transition hover:border-amber-500/60 hover:bg-zinc-900"
             >
               <div className="text-sm font-bold text-zinc-100">⬇ ダウンロード</div>

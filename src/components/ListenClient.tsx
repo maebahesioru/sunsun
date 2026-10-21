@@ -1,0 +1,507 @@
+"use client";
+
+import { useEffect, useMemo, useRef, useState } from "react";
+
+const PARTS = [
+  { id: "part1", label: "Part1（本放送）", dur: 24774 },
+  { id: "part2", label: "Part2", dur: 64444 },
+  { id: "part3", label: "Part3", dur: 15037 },
+  { id: "part4", label: "Part4（エンディング）", dur: 859 },
+];
+const OFFSETS = [0, 24774, 89218, 104255];
+
+type Tweet = {
+  t: number;
+  sn: string;
+  nm: string;
+  tx: string;
+  lk: number;
+  rt: number;
+  img: string;
+  mt: string;
+  md: string;
+  qn: string;
+  qt: string;
+  hs: string;
+  mn: string;
+  ur: string;
+  bd: string;
+  rc: number;
+  qc: number;
+  tw: string;
+  us: string;
+  ps: boolean;
+};
+
+type Song = {
+  n: number;
+  title: string;
+  dur: number;
+  start: number;
+};
+
+function fmt(ts: number) {
+  // JST固定表示（UTCメソッド+9h）→ SSR/クライアントのHydration不一致を防止
+  const d = new Date((ts + 9 * 3600) * 1000);
+  return `${String(d.getUTCMonth() + 1).padStart(2, "0")}/${String(
+    d.getUTCDate(),
+  ).padStart(2, "0")} ${String(d.getUTCHours()).padStart(2, "0")}:${String(
+    d.getUTCMinutes(),
+  ).padStart(2, "0")}`;
+}
+
+// HLS（.m3u8）動画プレイヤー（video.twimg.com の動画はHLSなのでhls.jsで再生）
+function VideoPlayer({ src }: { src: string }) {
+  const ref = useRef<HTMLVideoElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let hls: any = null;
+    if (src.endsWith(".m3u8")) {
+      import("hls.js")
+        .then(({ default: Hls }) => {
+          if (Hls.isSupported() && ref.current) {
+            hls = new Hls();
+            hls.loadSource(src);
+            hls.attachMedia(ref.current);
+          }
+        })
+        .catch(() => {
+          if (ref.current) ref.current.src = src;
+        });
+    } else {
+      el.src = src;
+    }
+    return () => {
+      if (hls) hls.destroy();
+    };
+  }, [src]);
+  return (
+    <video
+      ref={ref}
+      controls
+      preload="none"
+      playsInline
+      onClick={(e) => e.stopPropagation()}
+      className="mt-2 max-h-52 rounded-lg border border-zinc-800"
+    />
+  );
+}
+
+type ListenClientProps = {
+  /** 放送開始時刻（ISO8601）。タイムラインと曲の時刻計算の基準 */
+  baseIso: string;
+  /** 過去イベントのアーカイブを再生する場合のスラッグ（例: "2026-08-10"）。未指定なら今回のライブ再生 */
+  archive?: string;
+  downloadHref: string;
+  timetableHref: string;
+};
+
+export default function ListenClient({
+  baseIso,
+  archive,
+  downloadHref,
+  timetableHref,
+}: ListenClientProps) {
+  const BASE = new Date(baseIso).getTime() / 1000;
+  const qs = archive ? `?archive=${archive}` : "";
+  const [part, setPart] = useState(0);
+  const [pos, setPos] = useState(0);
+  const [tweets, setTweets] = useState<Tweet[]>([]);
+  const [songlist, setSonglist] = useState<Song[]>([]);
+  const [query, setQuery] = useState("");
+  const [songQuery, setSongQuery] = useState("");
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    fetch(`/api/timeline${qs}`)
+      .then((r) => r.json())
+      .then((d) => setTweets(d))
+      .catch(() => {});
+    fetch(`/api/songlist${qs}`)
+      .then((r) => r.json())
+      .then((d) => setSonglist(d))
+      .catch(() => {});
+  }, [qs]);
+
+  // URLパラメータ ?part=N で初期パート指定（N: 1-4）
+  useEffect(() => {
+    const p = parseInt(
+      new URLSearchParams(window.location.search).get("part") || "1",
+      10,
+    );
+    if (p >= 1 && p <= 4 && p - 1 !== part) setPart(p - 1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [qs]);
+
+  const changePart = (i: number) => {
+    setPart(i);
+    setPos(0);
+    if (audioRef.current) audioRef.current.currentTime = 0;
+    const url = new URL(window.location.href);
+    url.searchParams.set("part", String(i + 1));
+    window.history.replaceState(null, "", url.toString());
+  };
+
+  const realTime = BASE + OFFSETS[part] + pos;
+
+  // 現在流れてる曲を特定（開始時刻が再生位置以前の最新曲）
+  const currentSong = useMemo(() => {
+    let cur: Song | null = null;
+    for (const s of songlist) {
+      if (s.start <= realTime) cur = s;
+      else break;
+    }
+    return cur;
+  }, [songlist, realTime]);
+
+  // 曲目次の検索絞り込み（曲名・番号）
+  const filteredSongs = useMemo(() => {
+    if (!songQuery.trim()) return songlist;
+    const q = songQuery.trim().toLowerCase();
+    return songlist.filter(
+      (s) =>
+        s.title.toLowerCase().includes(q) || String(s.n).includes(q),
+    );
+  }, [songlist, songQuery]);
+
+  // 再生位置まで（+未来5分）のツイートを累積表示
+  const visible = useMemo(
+    () =>
+      tweets
+        .filter((t) => t.t <= realTime + 300)
+        .sort((a, b) => a.t - b.t),
+    [tweets, realTime],
+  );
+
+  // 検索（入力中は全ツイートから）
+  const filtered = useMemo(() => {
+    if (!query.trim()) return visible;
+    const q = query.trim().toLowerCase();
+    return tweets
+      .filter(
+        (t) =>
+          t.tx.toLowerCase().includes(q) ||
+          t.nm.toLowerCase().includes(q) ||
+          t.sn.toLowerCase().includes(q) ||
+          t.qn.toLowerCase().includes(q),
+      )
+      .sort((a, b) => a.t - b.t);
+  }, [tweets, query, visible]);
+
+  // ツイートの時刻へジャンプ（該当Partを自動選択してシーク）
+  const jumpTo = (t: number) => {
+    const pi = PARTS.findIndex(
+      (p, i) => t >= BASE + OFFSETS[i] && t < BASE + OFFSETS[i] + p.dur,
+    );
+    if (pi < 0) return;
+    setPart(pi);
+    const target = t - (BASE + OFFSETS[pi]);
+    setPos(target);
+    if (audioRef.current) {
+      audioRef.current.currentTime = target;
+      audioRef.current.play().catch(() => {});
+    }
+  };
+
+  // 新しいツイートが出たら下へ自動スクロール
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (el && !query) el.scrollTop = el.scrollHeight;
+  }, [filtered.length, query]);
+
+  return (
+    <main className="mx-auto max-w-4xl px-4 py-10">
+      <h1 className="text-3xl font-black text-zinc-100">🎧 ライブ再生</h1>
+      <p className="mt-2 text-sm text-zinc-400">
+        前回「野獣の日スペシャル」（2026年8月10日 19:00〜8月11日 22:48・全514曲）の放送録音アーカイブです。再生すると、その同時刻に投稿されたツイートが流れてきます。
+      </p>
+      <div className="mt-4 flex flex-wrap gap-2">
+        <a
+          href={downloadHref}
+          className="rounded-xl bg-amber-500 px-4 py-2 text-xs font-bold text-zinc-950 transition hover:bg-amber-400"
+        >
+          ⬇ ダウンロードはこちら
+        </a>
+        <a
+          href={timetableHref}
+          className="rounded-xl border border-zinc-700 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60"
+        >
+          番組表
+        </a>
+      </div>
+
+      {/* パート選択 */}
+      <div className="mt-6 flex flex-wrap gap-2">
+        {PARTS.map((p, i) => (
+          <button
+            key={p.id}
+            onClick={() => changePart(i)}
+            className={`rounded-xl px-4 py-2 text-xs font-bold transition ${
+              part === i
+                ? "bg-amber-500 text-zinc-950"
+                : "border border-zinc-700 text-zinc-300 hover:border-amber-500/60"
+            }`}
+          >
+            {p.label}
+          </button>
+        ))}
+      </div>
+
+      {/* プレイヤー */}
+      <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
+        <audio
+          ref={audioRef}
+          controls
+          preload="metadata"
+          src={`/api/download?file=${PARTS[part].id}.m4a&play=1`}
+          onTimeUpdate={(e) => setPos(e.currentTarget.currentTime)}
+          onSeeked={(e) => setPos(e.currentTarget.currentTime)}
+          className="w-full"
+        />
+        <div className="mt-2 text-xs text-zinc-500">
+          🕐 再生位置の実時刻:{" "}
+          <span className="font-bold text-amber-400">{fmt(realTime)}</span>
+          （ここまでのツイート {visible.length} 件）
+        </div>
+      </div>
+
+      {/* 現在の曲 + 曲目次 */}
+      <div className="mt-4 rounded-2xl border border-zinc-800 bg-zinc-900/60 p-4">
+        <div className="flex flex-wrap items-center gap-2 text-sm">
+          <span className="text-zinc-500">🎵 現在の曲:</span>
+          {currentSong ? (
+            <span className="font-bold text-amber-400">
+              {currentSong.n}曲目 {currentSong.title}
+              <span className="ml-2 text-xs font-normal text-zinc-500">
+                {fmt(currentSong.start)}〜
+              </span>
+            </span>
+          ) : (
+            <span className="text-zinc-600">（放送停止中・曲なし）</span>
+          )}
+        </div>
+        <details className="mt-3">
+          <summary className="cursor-pointer text-xs font-bold text-zinc-400 transition hover:text-amber-400">
+            📋 曲目次（{songlist.length}曲）クリックでその曲にジャンプ
+          </summary>
+          <input
+            type="text"
+            value={songQuery}
+            onChange={(e) => setSongQuery(e.target.value)}
+            placeholder="🔍 曲名・番号で検索（例: コネクト / 475）"
+            className="mt-2 w-full rounded-xl border border-zinc-700 bg-zinc-950 px-3 py-2 text-sm text-zinc-200 placeholder-zinc-600 outline-none transition focus:border-amber-500"
+          />
+          <div className="mt-2 max-h-64 overflow-y-auto rounded-xl border border-zinc-800 bg-zinc-950/60 p-2">
+            {filteredSongs.length === 0 && (
+              <div className="py-6 text-center text-xs text-zinc-600">
+                該当する曲がありません
+              </div>
+            )}
+            {filteredSongs.map((s) => (
+              <div
+                key={s.n}
+                onClick={() => jumpTo(s.start)}
+                className={`flex cursor-pointer items-center gap-2 rounded-lg px-3 py-1.5 text-xs transition hover:bg-zinc-800 ${
+                  currentSong?.n === s.n
+                    ? "bg-amber-500/20 font-bold text-amber-400"
+                    : "text-zinc-400"
+                }`}
+              >
+                <span className="w-8 shrink-0 font-mono text-zinc-600">
+                  {s.n}
+                </span>
+                <span className="min-w-0 flex-1 truncate">{s.title}</span>
+                <span className="shrink-0 font-mono text-zinc-600">
+                  {fmt(s.start)}
+                </span>
+              </div>
+            ))}
+          </div>
+        </details>
+      </div>
+
+      {/* 検索 */}
+      <div className="mt-4">
+        <input
+          type="text"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="🔍 ツイートを検索（テキスト・名前・@ID）… クリックでその時刻にジャンプ"
+          className="w-full rounded-xl border border-zinc-700 bg-zinc-900/60 px-4 py-3 text-sm text-zinc-100 placeholder-zinc-500 outline-none transition focus:border-amber-500/60"
+        />
+      </div>
+
+      {/* ツイートタイムライン */}
+      <div className="mt-4">
+        <div className="mb-2 text-xs font-bold text-zinc-500">
+          {query ? `🔍 検索結果 ${filtered.length} 件` : "📡 同時刻のツイート"}
+        </div>
+        <div
+          ref={scrollRef}
+          className="h-[480px] space-y-2 overflow-y-auto rounded-2xl border border-zinc-800 bg-zinc-900/40 p-4"
+        >
+          {filtered.length === 0 ? (
+            <div className="py-10 text-center text-sm text-zinc-600">
+              {query ? "検索結果がありません…" : "この時間帯のツイートはありません…"}
+            </div>
+          ) : (
+            filtered.map((t, i) => (
+              <div
+                key={`${t.t}-${t.sn}-${i}`}
+                onClick={() => jumpTo(t.t)}
+                className="cursor-pointer rounded-xl border border-zinc-800 bg-zinc-950/60 p-3 transition hover:border-amber-500/40"
+                title="クリックでこの時刻にジャンプ"
+              >
+                <div className="flex items-start gap-2">
+                  <div className="relative flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-zinc-800 text-xs font-bold text-zinc-400">
+                    {(t.nm || t.sn).charAt(0)}
+                    {t.img && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={t.img}
+                        alt=""
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display =
+                            "none";
+                        }}
+                        className="absolute inset-0 h-8 w-8 rounded-full bg-zinc-800"
+                      />
+                    )}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 text-[11px] text-zinc-500">
+                      <span className="font-bold text-zinc-300">
+                        {t.nm || t.sn}
+                        {t.bd && (
+                          <span
+                            className="ml-0.5 text-sky-400"
+                            title={`認証: ${t.bd}`}
+                          >
+                            ✓
+                          </span>
+                        )}
+                      </span>
+                      <span className="text-zinc-600">@{t.sn}</span>
+                      <span className="font-mono">{fmt(t.t)}</span>
+                      {(t.lk > 0 || t.rt > 0 || t.rc > 0 || t.qc > 0) && (
+                        <span className="ml-auto text-zinc-600">
+                          {t.lk > 0 && <>♥ {t.lk} </>}
+                          {t.rt > 0 && <>RT {t.rt} </>}
+                          {t.rc > 0 && <>↪ {t.rc} </>}
+                          {t.qc > 0 && <>❝ {t.qc}</>}
+                        </span>
+                      )}
+                    </div>
+                    <p className="mt-1 text-sm leading-relaxed text-zinc-200">
+                      {t.tx}
+                    </p>
+
+                    {/* ハッシュタグ・メンション・リンク */}
+                    {(t.hs || t.mn || t.ur) && (
+                      <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px]">
+                        {t.hs
+                          .split(",")
+                          .map((h) => h.trim())
+                          .filter(Boolean)
+                          .slice(0, 4)
+                          .map((h) => (
+                            <span key={h} className="text-sky-400">
+                              #{h}
+                            </span>
+                          ))}
+                        {t.mn
+                          .split(",")
+                          .map((m) => m.trim())
+                          .filter(Boolean)
+                          .slice(0, 2)
+                          .map((m) => (
+                            <span key={m} className="text-zinc-500">
+                              @{m}
+                            </span>
+                          ))}
+                        {t.ur && (
+                          <a
+                            href={t.ur}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="text-amber-400 underline"
+                          >
+                            🔗 リンク
+                          </a>
+                        )}
+                        {t.tw && (
+                          <a
+                            href={t.tw}
+                            target="_blank"
+                            rel="noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="ml-auto text-zinc-600 hover:text-sky-400"
+                            title="Xで開く"
+                          >
+                            ↗ X
+                          </a>
+                        )}
+                      </div>
+                    )}
+
+                    {/* 引用ツイート */}
+                    {t.qn && (
+                      <div className="mt-2 rounded-lg border border-zinc-800 bg-zinc-900/60 p-2 text-xs text-zinc-400">
+                        <span className="font-bold text-zinc-500">@{t.qn}</span>
+                        : {t.qt}
+                      </div>
+                    )}
+
+                    {/* 画像 */}
+                    {t.mt === "photo" && t.md && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={t.md}
+                        alt=""
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display =
+                            "none";
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(t.md, "_blank");
+                        }}
+                        className={`mt-2 max-h-52 cursor-zoom-in rounded-lg border border-zinc-800 ${
+                          t.ps ? "blur-md" : ""
+                        }`}
+                      />
+                    )}
+                    {/* 動画（HLS対応） */}
+                    {t.mt === "video" && t.md && <VideoPlayer src={t.md} />}
+                    {/* GIF */}
+                    {t.mt === "animated_gif" && t.md && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={t.md}
+                        alt=""
+                        loading="lazy"
+                        onError={(e) => {
+                          (e.currentTarget as HTMLImageElement).style.display =
+                            "none";
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.open(t.md, "_blank");
+                        }}
+                        className="mt-2 max-h-52 cursor-zoom-in rounded-lg border border-zinc-800"
+                      />
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+    </main>
+  );
+}

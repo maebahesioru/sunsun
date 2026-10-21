@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "番組表",
   description:
-    "マニアスプレッダーのサンサンサンデー エロウィンSP（2026年10月31日 18時〜）の番組表。今回の再生順はリクエスト締切後に決定します。前回「野獣の日スペシャル」の全曲番組表も掲載。",
+    "マニアスプレッダーのサンサンサンデー エロウィンSP（2026年10月31日 18時〜）の番組表。今回の再生順はリクエスト締切後に決定します。過去のイベントの番組表はアーカイブページに移動しました。",
 };
 
 type Song = {
@@ -272,61 +272,21 @@ export default function TimetablePage() {
             </div>
           </section>
 
-          {/* 前回イベントの番組表（過去イベント欄） */}
-          <section className="mt-16 border-t border-zinc-800 pt-10">
-            <div className="text-center">
-              <p className="text-xs font-semibold tracking-widest text-zinc-500">過去のイベント</p>
-              <h2 className="mt-2 text-2xl font-black sm:text-3xl">{data?.event?.name}</h2>
-              <p className="mt-2 text-sm text-zinc-400">{data?.event?.date}</p>
-              <p className="mt-1 text-xs text-zinc-500">{data?.event?.place}</p>
-            </div>
-
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
-              {[
-                { label: "収録曲数", value: `${order.length}曲` },
-                { label: "総再生時間", value: formatTotal(playedSec) },
-                { label: "開始", value: formatDateTime(baseStart) },
-                { label: "終了", value: formatDateTime(endAt) },
-              ].map((c) => (
-                <div
-                  key={c.label}
-                  className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-4 text-center"
-                >
-                  <div className="text-sm font-black text-amber-400">{c.value}</div>
-                  <div className="mt-1 text-xs text-zinc-500">{c.label}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-4 flex flex-wrap justify-center gap-2">
-              <a
-                href="/listen"
-                className="rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-300"
-              >
-                🎧 この回の録音を再生
-              </a>
-              <a
-                href="/download"
-                className="rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-300"
-              >
-                ⬇ 音源・ツイートデータ
-              </a>
-              <a
-                href="https://x.com/search?q=%23%E3%83%9E%E3%83%8B%E3%82%A2%E3%82%B9%E3%83%97%E3%83%AC%E3%83%83%E3%83%80%E3%83%BC%E3%81%AE%E3%82%B5%E3%83%B3%E3%82%B5%E3%83%B3%E3%82%B5%E3%83%B3%E3%83%87%E3%83%BC"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-xl border border-zinc-700 bg-zinc-900 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-300"
-              >
-                #️⃣ 当時のハッシュタグ
-              </a>
-            </div>
-
-            <SongList songs={listItems} startDateMs={baseStart.getTime()} live={false} />
-
-            <p className="mt-8 text-center text-xs leading-relaxed text-zinc-600">
-              時刻は開催予定時刻（{formatTime(baseStart)} 開始）を基準にした予定表です。
-              実際の放送では開始遅延や曲のスキップが発生する場合があります。
+          {/* 過去のイベントはアーカイブページへ分離 */}
+          <section className="mt-10 rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6 text-center">
+            <p className="text-xs font-bold tracking-widest text-zinc-500">過去のイベント</p>
+            <h2 className="mt-2 text-lg font-black text-zinc-100">
+              野獣の日スペシャル（2026.8.10）
+            </h2>
+            <p className="mx-auto mt-2 max-w-xl text-sm leading-relaxed text-zinc-400">
+              前回の番組表・放送録音・ダウンロードは、アーカイブページに移動しました。
             </p>
+            <a
+              href="/archive/2026-08-10"
+              className="mt-4 inline-flex rounded-full border border-zinc-700 px-5 py-2 text-sm font-semibold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-400"
+            >
+              📚 過去のイベント（アーカイブ）を見る
+            </a>
           </section>
         </>
       ) : (

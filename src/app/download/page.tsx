@@ -3,101 +3,69 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "ダウンロード",
   description:
-    "マニアスプレッダーのサンサンサンデー2026の放送録音・ツイートデータのアーカイブです。前回「野獣の日スペシャル」（2026年8月10日開催）の全記録を、いつでも聞き直せます。",
+    "マニアスプレッダーのサンサンサンデー エロウィンSP（2026年10月31日 18時〜）のダウンロードページ。今回の放送録音は放送終了後に公開します。前回「野獣の日スペシャル」の音源・ツイートデータはアーカイブページから取得できます。",
 };
-
-const FILES = [
-  {
-    file: "part1.m4a",
-    title: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル（本放送 Part1）",
-    size: "281MB",
-    desc: "本放送 Part1",
-  },
-  {
-    file: "part2.m4a",
-    title: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル Part2",
-    size: "731MB",
-    desc: "Part2",
-  },
-  {
-    file: "part3.m4a",
-    title: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル Part3",
-    size: "171MB",
-    desc: "Part3",
-  },
-  {
-    file: "part4.m4a",
-    title: "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル Part4",
-    size: "9.8MB",
-    desc: "Part4（エンディング）",
-  },
-  {
-    file: "sunsun.csv",
-    title: "ツイートデータ（#マニアスプレッダーのサンサンサンデー）",
-    size: "11MB",
-    desc: "ハッシュタグツイート7,726件のCSV",
-  },
-];
 
 export default function DownloadPage() {
   return (
     <main className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="text-3xl font-black text-zinc-100">ダウンロード</h1>
-      <p className="mt-2 text-sm text-zinc-400">
-        前回「野獣の日スペシャル」（2026年8月10日 19:00〜8月11日 22:48・全514曲）の放送録音とツイートデータのアーカイブです。今回のエロウィンSPの録音は、放送終了後にここへ追加します。
-      </p>
-      <div className="mt-4 flex flex-wrap gap-2">
-        <a
-          href="/listen?part=1"
-          className="rounded-xl bg-amber-500 px-4 py-2 text-xs font-bold text-zinc-950 transition hover:bg-amber-400"
-        >
-          ▶ ライブ再生はこちら
-        </a>
-        <a
-          href="/timetable"
-          className="rounded-xl border border-zinc-700 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60"
-        >
-          番組表
-        </a>
+      <div className="text-center">
+        <p className="text-xs font-semibold tracking-widest text-amber-400">
+          サンサンサンデー 2026 エロウィンSP
+        </p>
+        <h1 className="mt-2 text-3xl font-black text-zinc-100">⬇ ダウンロード</h1>
       </div>
 
-      <div className="mt-8 space-y-3">
-        {FILES.map((f) => (
-          <div
-            key={f.file}
-            className="flex items-center justify-between gap-4 rounded-2xl border border-zinc-800 bg-zinc-900/50 p-4 transition hover:border-amber-500/50"
+      <section className="mt-8 rounded-3xl border border-dashed border-amber-500/40 bg-amber-500/[0.04] px-6 py-12 text-center">
+        <p className="text-xs font-bold tracking-widest text-amber-400">2026.10.31（土）18:00〜</p>
+        <h2 className="mt-3 text-2xl font-black text-zinc-100">今回の録音は放送終了後に公開します</h2>
+        <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-zinc-400">
+          放送終了後、このページから今回の放送録音（パート別）とツイートデータをダウンロードできるようになります。
+        </p>
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+          <a
+            href="https://forms.gle/GWPTiyECSvSa4ZMT9"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-full bg-amber-500 px-5 py-2 text-sm font-bold text-zinc-950 transition hover:bg-amber-400"
           >
-            <div className="min-w-0">
-              <div className="truncate text-sm font-bold text-zinc-100">
-                {f.title}
-              </div>
-              <div className="mt-1 text-xs text-zinc-500">
-                {f.desc}・{f.size}
-              </div>
-            </div>
-            <div className="flex shrink-0 items-center gap-2">
-              {f.file.endsWith(".m4a") && (
-                <a
-                  href={`/listen?part=${FILES.indexOf(f) + 1}`}
-                  className="shrink-0 rounded-xl border border-zinc-700 px-3 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-300"
-                >
-                  ▶ サイト内再生
-                </a>
-              )}
-              <a
-                href={`/api/download?file=${f.file}`}
-                className="shrink-0 rounded-xl bg-amber-500 px-4 py-2 text-xs font-bold text-zinc-950 transition hover:bg-amber-400"
-              >
-                ⬇ ダウンロード
-              </a>
-            </div>
-          </div>
-        ))}
-      </div>
+            匿名でリクエスト（Googleフォーム）
+          </a>
+          <a
+            href="/archive/2026-08-10/download"
+            className="rounded-full border border-zinc-700 px-5 py-2 text-sm font-semibold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-400"
+          >
+            📚 前回の音源をダウンロード
+          </a>
+        </div>
+      </section>
 
-      <p className="mt-10 text-center text-xs text-zinc-600">
-        ※ 録音はすべて前回「マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル」のアーカイブです。
-      </p>
+      <section className="mt-8 rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6">
+        <h2 className="text-sm font-bold text-zinc-200">前回（野獣の日スペシャル）のアーカイブ</h2>
+        <p className="mt-2 text-sm leading-relaxed text-zinc-400">
+          2026年8月10日開催・全514曲／27時間48分。録音4パート（約1.2GB）とツイートデータは、アーカイブページに分離しました。
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2">
+          <a
+            href="/archive/2026-08-10/download"
+            className="rounded-xl border border-zinc-700 bg-zinc-950/60 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-300"
+          >
+            ⬇ 音源・ツイートデータ
+          </a>
+          <a
+            href="/archive/2026-08-10/listen"
+            className="rounded-xl border border-zinc-700 bg-zinc-950/60 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-300"
+          >
+            🎧 録音を再生
+          </a>
+          <a
+            href="/archive/2026-08-10/timetable"
+            className="rounded-xl border border-zinc-700 bg-zinc-950/60 px-4 py-2 text-xs font-bold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-300"
+          >
+            📋 番組表
+          </a>
+        </div>
+      </section>
     </main>
   );
 }

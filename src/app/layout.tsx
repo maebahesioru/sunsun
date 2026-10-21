@@ -166,6 +166,12 @@ export default function RootLayout({
                 ダウンロード
               </Link>
               <Link
+                href="/archive"
+                className="text-zinc-300 transition hover:text-amber-400"
+              >
+                アーカイブ
+              </Link>
+              <Link
                 href="/listen"
                 className="rounded-full bg-amber-500 px-4 py-1.5 font-semibold text-zinc-950 transition hover:bg-amber-400"
               >
