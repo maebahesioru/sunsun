@@ -30,11 +30,13 @@ export default function StatsCards({
   totalSec,
   startDateMs,
   durations,
+  undecided = false,
 }: {
   totalSongs: number;
   totalSec: number;
   startDateMs: number;
   durations: number[];
+  undecided?: boolean;
 }) {
   const [baseMs, setBaseMs] = useState<number | null>(null);
 
@@ -68,12 +70,19 @@ export default function StatsCards({
   const base = baseMs ?? startDateMs;
   const end = new Date(base + totalSec * 1000);
 
-  const cards = [
-    { label: "収録曲数", value: `${totalSongs}曲` },
-    { label: "総再生時間", value: formatTotal(totalSec) },
-    { label: "開始予定", value: formatDate(new Date(base)) },
-    { label: "終了予定", value: formatDate(end) },
-  ];
+  const cards = undecided
+    ? [
+        { label: "収録曲数", value: "未定" },
+        { label: "総再生時間", value: "未定" },
+        { label: "開始予定", value: formatDate(new Date(base)) },
+        { label: "終了予定", value: "未定" },
+      ]
+    : [
+        { label: "収録曲数", value: `${totalSongs}曲` },
+        { label: "総再生時間", value: formatTotal(totalSec) },
+        { label: "開始予定", value: formatDate(new Date(base)) },
+        { label: "終了予定", value: formatDate(end) },
+      ];
 
   return (
     <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">

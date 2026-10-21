@@ -297,6 +297,7 @@ export default function TimetablePage() {
             totalSec={decided ? playedSec : data.total_sec}
             startDateMs={baseStart.getTime()}
             durations={order.map((s) => s.duration_sec || 0)}
+            undecided={!decided}
           />
 
           {/* 決定状態 */}
@@ -312,8 +313,16 @@ export default function TimetablePage() {
           </div>
 
           <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-zinc-400">
-            リクエストされた曲の中から、実際に流す再生順を完全ランダムに決定しました。
-            この順番が放送で使われる本番の番組表です。
+            {decided ? (
+              <>
+                リクエストされた曲の中から、実際に流す再生順を完全ランダムに決定しました。
+                この順番が放送で使われる本番の番組表です。
+              </>
+            ) : (
+              <>
+                リクエスト受付の締切後、集まった曲から再生順を完全ランダムに決定してここに公開します。
+              </>
+            )}
           </p>
 
           {/* 曲リスト（検索対応） */}
@@ -325,9 +334,11 @@ export default function TimetablePage() {
             <SongList songs={listItems} startDateMs={baseStart.getTime()} />
           )}
 
-          <p className="mt-8 text-center text-xs leading-relaxed text-zinc-600">
-            この順番が実際に放送で流れる再生順です。放送時、運営の都合により曲が飛ばされる場合があります。
-          </p>
+          {decided && (
+            <p className="mt-8 text-center text-xs leading-relaxed text-zinc-600">
+              この順番が実際に放送で流れる再生順です。放送時、運営の都合により曲が飛ばされる場合があります。
+            </p>
+          )}
         </>
       )}
       </main>

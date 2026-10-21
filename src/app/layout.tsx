@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
     default: "マニアスプレッダーのサンサンサンデー エロウィンSP",
-    template: "%s | マニアスプレッダーのサンサンサンデー2026",
+    template: "%s | マニアスプレッダーのサンサンサンデー エロウィンSP",
   },
   description:
     "マニアスプレッダーのサンサンサンデー2026公式サイト。2026年10月31日（土）18時より@okubahesioruのXスペースで開催。ヒカマー界隈の音MAD・VTuber楽曲・不謹慎系音声まで何でもありのオールナイト音楽リクエスト配信。",
