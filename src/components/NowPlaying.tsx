@@ -127,7 +127,13 @@ export default function NowPlaying({ schedule }: { schedule: ScheduleItem[] }) {
               : "bg-zinc-800/90 text-zinc-500"
         }`}
       >
-        {state.phase === "before" && "⏳ 開演前（19:00 開始予定）"}
+        {state.phase === "before" &&
+          `⏳ 開演前（${new Date(schedule[0].startMs).toLocaleTimeString("ja-JP", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+            timeZone: "Asia/Tokyo",
+          })} 開始予定）`}
         {state.phase === "playing" &&
           state.nowIdx !== null &&
           `▶ 放送中: ${String(state.nowIdx + 1).padStart(3, "0")}曲目`}

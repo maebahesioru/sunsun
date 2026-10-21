@@ -28,15 +28,19 @@ function formatTime(date: Date): string {
 export default function SongList({
   songs,
   startDateMs,
+  live = true,
 }: {
   songs: SongListItem[];
   startDateMs: number;
+  /** false のとき放送中同期（/api/now-playing）を行わない。過去イベントの番組表用 */
+  live?: boolean;
 }) {
   const [query, setQuery] = useState("");
   const [baseMs, setBaseMs] = useState<number | null>(null);
 
   // 実際の放送開始時刻を取得して自動追従（放送開始後は番組表の時刻が全部ずれる）
   useEffect(() => {
+    if (!live) return;
     let cancelled = false;
     const tick = async () => {
       try {
@@ -61,7 +65,7 @@ export default function SongList({
       cancelled = true;
       clearInterval(timer);
     };
-  }, [songs]);
+  }, [songs, live]);
 
   const base = baseMs ?? startDateMs;
 

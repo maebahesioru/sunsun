@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "番組表",
   description:
-    "マニアスプレッダーのサンサンサンデー エロウィンSPの全曲番組表。リクエスト曲の放送予定時刻・リクエスト者・再生順を確認できます。",
+    "マニアスプレッダーのサンサンサンデー エロウィンSP（2026年10月31日 18時〜）の番組表。今回の再生順はリクエスト締切後に決定します。前回「野獣の日スペシャル」の全曲番組表も掲載。",
 };
 
 type Song = {
@@ -120,8 +120,10 @@ function formatDateTime(date: Date): string {
   return `${jst.getMonth() + 1}/${jst.getDate()}（${week}）${formatTime(date)}`;
 }
 
-// 放送開始時刻（18時ちょうど開始の場合）
-const START_DATE = new Date("2026-10-31T18:00:00+09:00");
+// 今回（エロウィンSP）の放送開始時刻: 18時ちょうど開始
+const CURRENT_START = new Date("2026-10-31T18:00:00+09:00");
+// 前回（野獣の日スペシャル）の放送開始時刻: 19時ちょうど開始
+const PAST_START = new Date("2026-08-10T19:00:00+09:00");
 
 export default function TimetablePage() {
   const dataDir = path.join(process.cwd(), "public", "data");
@@ -129,6 +131,11 @@ export default function TimetablePage() {
 
   const eventRaw = readFileSync(path.join(dataDir, "songs.json"), "utf-8");
   const data: EventData = JSON.parse(eventRaw);
+
+  // public/data の中身が前回イベント（野獣の日スペシャル）のものかどうか。
+  // 今回のリクエストから番組表を作り直したら自動で「今回の番組表」表示に戻る。
+  const isPastEvent = /野獣の日/.test(data.event.name ?? "");
+  const baseStart = isPastEvent ? PAST_START : CURRENT_START;
 
   let order: Song[] = [];
   let decidedAt: string | null = null;
@@ -151,14 +158,14 @@ export default function TimetablePage() {
   const decided = order.length > 0;
   const playedSec = order.reduce((acc, s) => acc + (s.duration_sec || 0), 0);
 
-  // タイムテーブル: 18時ちょうど開始として各曲の開始予定時刻を計算
+  // タイムテーブル: 開始時刻を基準に各曲の開始予定時刻を計算
   let cumulative = 0;
   const schedule: ScheduleItem[] = order.map((song, idx) => {
-    const startMs = START_DATE.getTime() + cumulative * 1000;
+    const startMs = baseStart.getTime() + cumulative * 1000;
     cumulative += song.duration_sec || 0;
     return { idx, startMs, durationSec: song.duration_sec || 0 };
   });
-  const endAt = new Date(START_DATE.getTime() + playedSec * 1000);
+  const endAt = new Date(baseStart.getTime() + playedSec * 1000);
 
   // 検索・表示用のリストアイテムを組み立てる
   const listItems: SongListItem[] = order.map((song, idx) => ({
@@ -174,6 +181,10 @@ export default function TimetablePage() {
     url: song.url,
   }));
 
+  const playlistName = isPastEvent
+    ? "マニアスプレッダーのサンサンサンデー2026 野獣の日スペシャル 番組表"
+    : "マニアスプレッダーのサンサンサンデー エロウィンSP 番組表";
+
   return (
     <>
       <script
@@ -182,7 +193,7 @@ export default function TimetablePage() {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "MusicPlaylist",
-            name: "マニアスプレッダーのサンサンサンデー エロウィンSP 番組表",
+            name: playlistName,
             numTracks: order.length,
             track: order.map((s) => ({
               "@type": "MusicRecording",
@@ -220,48 +231,118 @@ export default function TimetablePage() {
         }}
       />
       <main id="timetable-top" className="mx-auto max-w-5xl px-4 py-10">
-      <NowPlaying schedule={schedule} />
+      {!isPastEvent && <NowPlaying schedule={schedule} />}
       <div className="text-center">
-        <p className="text-xs font-semibold tracking-widest text-amber-400">完全ランダム再生順</p>
-        <h1 className="mt-2 text-3xl font-black sm:text-4xl">🎲 番組表</h1>
-        <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-zinc-400">
-          リクエストされた曲の中から、実際に流す再生順を完全ランダムに決定しました。
-          この順番が放送で使われる本番の番組表です。
-        </p>
+        <p className="text-xs font-semibold tracking-widest text-amber-400">サンサンサンデー 2026</p>
+        <h1 className="mt-2 text-3xl font-black sm:text-4xl">📋 番組表</h1>
       </div>
 
-      {/* 統計カード（放送開始後は実際の開始時刻に自動追従） */}
-      <StatsCards
-        totalSongs={data.total_songs}
-        totalSec={data.total_sec}
-        startDateMs={START_DATE.getTime()}
-        durations={order.map((s) => s.duration_sec || 0)}
-      />
+      {isPastEvent ? (
+        <>
+          {/* 今回（エロウィンSP）: まだ番組表は無い */}
+          <section className="mt-8 rounded-3xl border border-dashed border-amber-500/40 bg-amber-500/[0.04] px-6 py-10 text-center">
+            <p className="text-xs font-bold tracking-widest text-amber-400">エロウィンSP（今回）</p>
+            <h2 className="mt-3 text-2xl font-black sm:text-3xl">再生順は未定です</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-relaxed text-zinc-400">
+              リクエスト受付は
+              <span className="font-bold text-zinc-200"> 10月31日（土）17:00 </span>
+              まで。締切後に抽選して再生順を決定し、このページで公開します。
+              <br className="hidden sm:block" />
+              応募方法・ルールの詳細はトップページをご確認ください。
+            </p>
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+              <a
+                href="https://forms.gle/GWPTiyECSvSa4ZMT9"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full bg-amber-500 px-5 py-2 text-sm font-bold text-zinc-950 transition hover:bg-amber-400"
+              >
+                匿名でリクエスト（Googleフォーム）
+              </a>
+              <a
+                href="/"
+                className="rounded-full border border-zinc-700 px-5 py-2 text-sm font-semibold text-zinc-300 transition hover:border-amber-500/60 hover:text-amber-400"
+              >
+                開催概要・ルールを見る
+              </a>
+            </div>
+          </section>
 
-      {/* 決定状態 */}
-      <div className="mt-4 flex items-center justify-center gap-2 text-sm text-zinc-400">
-        <span
-          className={`rounded-full px-3 py-1 text-xs font-bold ${
-            decided ? "bg-emerald-500/20 text-emerald-300" : "bg-zinc-800 text-zinc-400"
-          }`}
-        >
-          {decided ? "✅ 決定済み" : "⏳ 未決定"}
-        </span>
-        {decidedAt && <span className="text-xs text-zinc-500">決定日時: {decidedAt}</span>}
-      </div>
+          {/* 前回イベントの番組表（過去イベント欄） */}
+          <section className="mt-16 border-t border-zinc-800 pt-10">
+            <div className="text-center">
+              <p className="text-xs font-semibold tracking-widest text-zinc-500">過去のイベント</p>
+              <h2 className="mt-2 text-2xl font-black sm:text-3xl">{data.event.name}</h2>
+              <p className="mt-2 text-sm text-zinc-400">{data.event.date}</p>
+              <p className="mt-1 text-xs text-zinc-500">{data.event.place}</p>
+            </div>
 
-      {/* 曲リスト（検索対応） */}
-      {!decided ? (
-        <div className="mt-6 rounded-2xl border border-dashed border-zinc-800 p-12 text-center text-sm text-zinc-500">
-          まだ再生順が決定されていません。
-        </div>
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {[
+                { label: "収録曲数", value: `${data.total_songs}曲` },
+                { label: "総再生時間", value: formatTotal(data.total_sec) },
+                { label: "開始", value: formatDateTime(baseStart) },
+                { label: "終了", value: formatDateTime(endAt) },
+              ].map((c) => (
+                <div
+                  key={c.label}
+                  className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-4 text-center"
+                >
+                  <div className="text-sm font-black text-amber-400">{c.value}</div>
+                  <div className="mt-1 text-xs text-zinc-500">{c.label}</div>
+                </div>
+              ))}
+            </div>
+
+            <SongList songs={listItems} startDateMs={baseStart.getTime()} live={false} />
+
+            <p className="mt-8 text-center text-xs leading-relaxed text-zinc-600">
+              時刻は開催予定時刻（{formatTime(baseStart)} 開始）を基準にした予定表です。
+              実際の放送では開始遅延や曲のスキップが発生する場合があります。
+            </p>
+          </section>
+        </>
       ) : (
-        <SongList songs={listItems} startDateMs={START_DATE.getTime()} />
-      )}
+        <>
+          {/* 統計カード（放送開始後は実際の開始時刻に自動追従） */}
+          <StatsCards
+            totalSongs={data.total_songs}
+            totalSec={data.total_sec}
+            startDateMs={baseStart.getTime()}
+            durations={order.map((s) => s.duration_sec || 0)}
+          />
 
-      <p className="mt-8 text-center text-xs leading-relaxed text-zinc-600">
-        この順番が実際に放送で流れる再生順です。放送時、運営の都合により曲が飛ばされる場合があります。
-      </p>
+          {/* 決定状態 */}
+          <div className="mt-4 flex items-center justify-center gap-2 text-sm text-zinc-400">
+            <span
+              className={`rounded-full px-3 py-1 text-xs font-bold ${
+                decided ? "bg-emerald-500/20 text-emerald-300" : "bg-zinc-800 text-zinc-400"
+              }`}
+            >
+              {decided ? "✅ 決定済み" : "⏳ 未決定"}
+            </span>
+            {decidedAt && <span className="text-xs text-zinc-500">決定日時: {decidedAt}</span>}
+          </div>
+
+          <p className="mx-auto mt-4 max-w-2xl text-center text-sm leading-relaxed text-zinc-400">
+            リクエストされた曲の中から、実際に流す再生順を完全ランダムに決定しました。
+            この順番が放送で使われる本番の番組表です。
+          </p>
+
+          {/* 曲リスト（検索対応） */}
+          {!decided ? (
+            <div className="mt-6 rounded-2xl border border-dashed border-zinc-800 p-12 text-center text-sm text-zinc-500">
+              まだ再生順が決定されていません。
+            </div>
+          ) : (
+            <SongList songs={listItems} startDateMs={baseStart.getTime()} />
+          )}
+
+          <p className="mt-8 text-center text-xs leading-relaxed text-zinc-600">
+            この順番が実際に放送で流れる再生順です。放送時、運営の都合により曲が飛ばされる場合があります。
+          </p>
+        </>
+      )}
       </main>
     </>
   );
