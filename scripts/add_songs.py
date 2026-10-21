@@ -85,7 +85,9 @@ def sync_playlist_to_site():
         )
         r = subprocess.run(
             ["ssh", *ssh_opts, target,
-             f"sudo docker cp /tmp/playlist.csv {container}:/app/public/data/ && sudo docker cp /tmp/songs.json {container}:/app/public/data/"],
+             # docker cp したファイルは root(node)所有 700 のまま → nextjs が read できず /timetable が 500 になる。
+             # ディレクトリだけでなく「ファイル本体」を chmod し、コンテナ内は root(-u 0) で実行する。
+             f"sudo docker cp /tmp/playlist.csv {container}:/app/public/data/ && sudo docker cp /tmp/songs.json {container}:/app/public/data/ && sudo docker exec -u 0 {container} chmod 666 /app/public/data/songs.json /app/public/data/playlist.csv && sudo docker exec {container} chmod 777 /app/public/data"],
             capture_output=True, text=True, timeout=30,
         )
         if r.returncode == 0:
