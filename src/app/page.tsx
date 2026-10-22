@@ -94,7 +94,7 @@ export default function Home() {
         </h1>
         <p className="mt-4 max-w-2xl text-sm leading-relaxed text-zinc-300 sm:text-base">
           ヒカマー界隈の恒例イベント、音楽リクエストラジオ番組風配信。カオスな選曲とハプニング満載の
-          オールナイトが今年も帰ってくる。リクエストはXのリプライ、またはGoogleフォームで受付中！
+          オールナイトが今年も帰ってくる。リクエストはGoogleフォームで受付中！（Xのリプライでの受付は一時停止しています）
         </p>
         <p className="mt-3 max-w-2xl text-xs leading-relaxed text-zinc-400">
           マニアスプレッダー氏の許諾を得て開催しています。参加・視聴は完全無料、広告はありません。
@@ -196,14 +196,14 @@ export default function Home() {
         <div className="mt-4 grid gap-4 sm:grid-cols-2">
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6">
             <div className="flex items-center gap-2">
-              <span className="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-bold text-amber-400">通常</span>
-              <h3 className="font-bold">リプライでリクエスト</h3>
+              <span className="rounded-full bg-red-500/20 px-3 py-1 text-xs font-bold text-red-400">一時停止中</span>
+              <h3 className="font-bold">リプライでの受付は停止中</h3>
             </div>
             <p className="mt-3 text-sm leading-relaxed text-zinc-300">
-              曲募集ポストのリプライ欄に、リクエストしたい楽曲のURLを貼ってください。
-              引用ポストやリポストなどで拡散していただけるとありがたいです！
+              曲募集ポストを出していたXアカウントの凍結により、リプライでの受付を一時停止しています。
+              再開できる場合はあらためて告知します。いまは右のGoogleフォームからお送りください。
             </p>
-            <p className="mt-3 text-xs text-zinc-500">受付完了の合図: 主催者から「いいね」が付く</p>
+            <p className="mt-3 text-xs text-zinc-500">匿名・鍵アカウントの方もフォームから送信できます</p>
           </div>
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/50 p-6">
             <div className="flex items-center gap-2">
